@@ -1,6 +1,15 @@
 <script lang="ts">
     import { onMount } from "svelte";
 
+    type VirtualDirectory = {
+        files?: string[];
+        [subdir: string]: VirtualDirectory | string[] | undefined;
+    };
+
+    type VirtualFilesystem = {
+        [dir: string]: VirtualDirectory;
+    };
+
     let cmdInput: HTMLSpanElement;
     let outputHistory: HTMLDivElement;
 
@@ -25,8 +34,42 @@
     });
 
     let userName = "march";
+    let workingDirectoryPath = `/home/${userName}`;
+    let virtualFilesystem: VirtualFilesystem = {
+        "": {
+            "home": {
+                [userName]: {
+                    ".secret": {},
+                    "Documents": {
+                        files: ["resume.pdf", "env.txt"]
+                    },
+                    "Pictures": {
+                        files: ["canine.jpg", "feline.png"]
+                    },
+                    "Music": {
+                        files: ["daftendirekt.mp3"]
+                    },
+                    "Videos": {
+                        files: ["sarod.mp4"]
+                    },
+                    "Downloads": {
+                        files: ["magisk.img", "bitcoin.exe"]
+                    },
+                    files: ["cat.txt"]
+                }
+            },
+            "tmp": {
+                files: ["cache.tgz"]
+            },
+            "opt": {},
+            "usr": {},
+            "etc": {},
+            "var": {},
+            "boot": {},
+        }
+    }
 
-    let promptText = `oh no ${userName} is in ~ $`;
+    let promptText = `oh no ${userName} is in ${workingDirectoryPath} $`;
 
     function parseCommand(cmd: string): string {
         switch (cmd) {
@@ -65,6 +108,9 @@
     ls - List files in the current directory
     pwd - Print current working directory
     whoami - Show the current user`;
+            
+            case "pwd":
+                return workingDirectoryPath;
             
             case "whoami":
                 return userName;
