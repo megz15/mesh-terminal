@@ -16,16 +16,14 @@
     onMount(() => {
         window.onload = () => {
             window.addEventListener("keydown", (e) => {
-                let cmd = cmdInput.textContent!;
+                let cmd = cmdInput.textContent!.trim().split(" ");
                 if (e.key.length == 1) {
                     cmdInput.textContent += e.key;
                 } else if (e.key == "Backspace") {
-                    cmdInput.textContent = cmd.slice(0, -1);
+                    cmdInput.textContent = cmd.join(" ").slice(0, -1);
                 } else if (e.key == "Enter") {
-                    cmd = cmd.trim();
-                    let output = parseCommand(cmd);
-
-                    if (cmd != "clear" && cmd != "") outputHistory.innerHTML += `<pre>${promptText} ${cmd}</div><pre class="text-base/4"> &gt&gt ${output}</pre>`;
+                    let output = parseCommand(cmd[0], cmd.slice(1));
+                    if (cmd[0] != "clear" && cmd[0] != "") outputHistory.innerHTML += `<pre>${promptText} ${cmd.join(" ")}</div><pre class="text-base/4"> &gt&gt ${output}</pre>`;
                     cmdInput.textContent = "";
 
                 }
@@ -71,7 +69,7 @@
 
     let promptText = `oh no ${userName} is in ${workingDirectoryPath} $`;
 
-    function parseCommand(cmd: string): string {
+    function parseCommand(cmd: string, args: string[] = []): string {
         switch (cmd) {
 
             case "":
@@ -108,6 +106,36 @@
     ls - List files in the current directory
     pwd - Print current working directory
     whoami - Show the current user`;
+
+            case "ls":
+                let requiredDir: VirtualDirectory = virtualFilesystem[""];
+                let requiredDirPath = workingDirectoryPath;
+                let pathExists = true;
+                
+                if (args.length != 0) {
+                    requiredDirPath = args.at(-1)!;
+
+                    if (!requiredDirPath.startsWith("/")) {
+                        requiredDirPath = `${workingDirectoryPath}/${requiredDirPath}`;
+                    }
+                }
+
+                requiredDirPath.split("/").slice(1).forEach((dir) => {
+                    if (requiredDir[dir]) {
+                        requiredDir = requiredDir[dir] as VirtualDirectory;
+                    } else {
+                        pathExists = false;
+                    }
+                });
+
+                if (requiredDirPath == "/") {
+                    pathExists = true;
+                    requiredDir = virtualFilesystem[""];
+                }
+                
+                if (!pathExists) {
+                    return `ls: cannot access '${requiredDirPath}': No such file or directory`;
+                } else return ["", ".", "..", ...Object.keys(requiredDir).filter(dir => dir != "files"), ...requiredDir.files || []].join("\n");
             
             case "pwd":
                 return workingDirectoryPath;
