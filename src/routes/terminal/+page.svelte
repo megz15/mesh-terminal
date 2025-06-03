@@ -35,9 +35,9 @@
                         break;
                     
                     case "Enter":
-                        outputHistory.innerHTML += `<pre>${promptText} ${cmd.join(" ")}`
+                        outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${cmd.join(" ")}</pre>`;
                         let output = parseCommand(cmd[0], cmd.slice(1));
-                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `</div><pre class="text-base/5 break-all whitespace-pre-wrap"> &gt&gt ${output}</pre>`;
+                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap"> &gt&gt ${output}</pre>`;
                         cmdInputText = "";
                         cursorPosition = 0;
                         break;
@@ -110,7 +110,7 @@
         }
     }
 
-    let promptText = $derived(`oh no ${userName} is in ${workingDirectoryPath} $`);
+    let promptText = $derived(`<span class="text-gray-200">oh no <span class="text-yellow-400 font-semibold">${userName}</span> is in <span class="text-blue-400 font-semibold">${workingDirectoryPath}</span> $</span>`);
 
     function parseCommand(cmd: string, args: string[] = []): string {
         switch (cmd) {
@@ -122,20 +122,18 @@
                 return "";
             
             case "banner":
-                return `
-
-    ##::::'##:'########::'######::'##::::'##:
-    ###::'###: ##.....::'##... ##: ##:::: ##:
-    ####'####: ##::::::: ##:::..:: ##:::: ##:
+                return `<div class="text-base/3.75 font-black text-yellow-400">
+    ##::::'##:'########::'######::'##::::::::
+    ###::'###: ##.....::'##... ##: ##::::::::
+    ####'####: ##::::::: ##:::..:: ##::::::::
     ## ### ##: ######:::. ######:: #########:
     ##. #: ##: ##...:::::..... ##: ##.... ##:
     ##:.:: ##: ##:::::::'##::: ##: ##:::: ##:
     ##:::: ##: ########:. ######:: ##:::: ##:
-    .:::::..::........:::......:::..:::::..::
-
-    Megz's Emulated Terminal Shell - v0.0.1
-    Type 'banner' to see this message again
-    Type 'help' for a list of commands
+    .:::::..::........:::......:::..:::::..::</div>
+    <span class="font-black text-xl text-yellow-400">M</span>egh's <span class="font-black text-xl text-yellow-400">E</span>mulated <span class="font-black text-xl text-yellow-400">Sh</span>ell - v0.0.1
+    Type <span class="text-yellow-400">'banner'</span> to see this message again
+    Type <span class="text-yellow-400">'help'</span> for a list of commands
                 `;
             
             case "help":
@@ -165,7 +163,7 @@
             case "cd":
                 if (args.length != 0 && args[0] != ".") {
                     if (args.length > 1) {
-                        outputHistory.innerHTML += `</div><pre class="text-base/5 break-all whitespace-pre-wrap"> &gt&gt cd: too many arguments</pre>`;
+                        outputHistory.innerHTML += `</div><pre class="break-all whitespace-pre-wrap"> &gt&gt cd: too many arguments</pre>`;
                     } else if (args[0] == "..") {
                         if (workingDirectoryPath == "/") {
                         } else {
@@ -189,7 +187,7 @@
                         });
 
                         if (!pathExists) {
-                            outputHistory.innerHTML += `</div><pre class="text-base/5 break-all whitespace-pre-wrap"> &gt&gt cd: not a directory: ${requiredDirPath}</pre>`;
+                            outputHistory.innerHTML += `</div><pre class="break-all whitespace-pre-wrap"> &gt&gt cd: not a directory: ${requiredDirPath}</pre>`;
                         } else workingDirectoryPath = requiredDirPath;
                     }
                 }
@@ -267,7 +265,7 @@
                 return "User is too advanced for nano.\n >> Please use 'vim' instead.";
 
             default:
-                return `MESh: command not found: ${cmd}`;
+                return `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
         }
     }
 
@@ -289,8 +287,8 @@
 
 <div class="input">
     <div class="output-history" bind:this={outputHistory}>
-        <pre class="text-base/5 break-all whitespace-pre-wrap">{parseCommand("banner")}</pre>
+        <pre class="break-all whitespace-pre-wrap">{@html parseCommand("banner")}</pre>
     </div>
-    <span class="prompt">{promptText}</span>
-    <span class="cmd-input break-all">{@html highlightCursor(cmdInputText, cursorPosition)}</span>
+    <span class="prompt">{@html promptText}</span>
+    <span class="cmd-input break-all text-gray-200">{@html highlightCursor(cmdInputText, cursorPosition)}</span>
 </div>
