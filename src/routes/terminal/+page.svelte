@@ -225,6 +225,21 @@
                 return `MESh: command not found: ${cmd}`;
         }
     }
+
+
+    function highlightCursor(cmdInputText: string, cursorPosition: number) {
+        const cursorBound = Math.max(0, Math.min(cursorPosition, cmdInputText.length));
+
+        if (cursorPosition === cmdInputText.length) {
+            return cmdInputText + `<span class="bg-gray-300 text-black animate-[pulse_1s_ease_infinite]">&nbsp</span>`;
+        }
+
+        return (
+            cmdInputText.slice(0, cursorBound)
+            + `<span class="bg-gray-300 text-black animate-[pulse_1s_ease_infinite]">${cmdInputText[cursorBound]}</span>`
+            + cmdInputText.slice(cursorBound + 1)
+        );
+    }
 </script>
 
 <div class="input">
@@ -232,5 +247,5 @@
         <pre class="text-base/4">{parseCommand("banner")}</pre>
     </div>
     <span class="prompt">{promptText}</span>
-    <span class="cmd-input break-all">{cmdInputText}</span>
+    <span class="cmd-input break-all">{@html highlightCursor(cmdInputText, cursorPosition)}</span>
 </div>
