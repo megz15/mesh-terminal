@@ -10,23 +10,65 @@
         [dir: string]: VirtualDirectory;
     };
 
-    let cmdInput: HTMLSpanElement;
+    let cmdInputText = $state("");
     let outputHistory: HTMLDivElement;
+    let cursorPosition = $state(0);
 
     onMount(() => {
         window.onload = () => {
             window.addEventListener("keydown", (e) => {
-                let cmd = cmdInput.textContent!.trim().split(" ");
-                if (e.key.length == 1) {
-                    cmdInput.textContent += e.key;
-                } else if (e.key == "Backspace") {
-                    cmdInput.textContent = cmd.join(" ").slice(0, -1);
-                } else if (e.key == "Enter") {
-                    outputHistory.innerHTML += `<pre>${promptText} ${cmd.join(" ")}`
-                    let output = parseCommand(cmd[0], cmd.slice(1));
-                    if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `</div><pre class="text-base/4"> &gt&gt ${output}</pre>`;
-                    cmdInput.textContent = "";
+                e.preventDefault();
+                let cmd = cmdInputText.trim().split(" ");
+                switch (e.key) {
 
+                    case "Backspace":
+                        if (cursorPosition > 0) {
+                            cmdInputText = cmdInputText.slice(0, cursorPosition - 1) + cmdInputText.slice(cursorPosition);
+                            cursorPosition--;
+                        }
+                        break;
+                    
+                    case "Delete":
+                        if (cursorPosition < cmdInputText.length) {
+                            cmdInputText = cmdInputText.slice(0, cursorPosition) + cmdInputText.slice(cursorPosition + 1);
+                        }
+                        break;
+                    
+                    case "Enter":
+                        outputHistory.innerHTML += `<pre>${promptText} ${cmd.join(" ")}`
+                        let output = parseCommand(cmd[0], cmd.slice(1));
+                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `</div><pre class="text-base/4"> &gt&gt ${output}</pre>`;
+                        cmdInputText = "";
+                        cursorPosition = 0;
+                        break;
+                    
+                    case "ArrowLeft":
+                        if (cursorPosition > 0) cursorPosition--;
+                        break;
+                    
+                    case "ArrowRight":
+                        if (cursorPosition < cmdInputText.length) cursorPosition++;
+                        break;
+                    
+                    case "Home":
+                        cursorPosition = 0;
+                        break;
+                    
+                    case "End":
+                        cursorPosition = cmdInputText.length;
+                        break;
+                    
+                    case "Escape":
+                        cmdInputText = "";
+                        cursorPosition = 0;
+                        break;
+                    
+                    default:
+                        if (e.key.length == 1) {
+                            cmdInputText = cmdInputText.slice(0, cursorPosition) + e.key + cmdInputText.slice(cursorPosition);
+                            cursorPosition++;
+                        }
+                        break;
                 }
             })
         }
@@ -72,6 +114,9 @@
 
     function parseCommand(cmd: string, args: string[] = []): string {
         switch (cmd) {
+
+            case "test":
+                return `${cursorPosition}`;
 
             case "":
                 return "";
@@ -128,7 +173,7 @@
             
             case "clear":
                 outputHistory.innerHTML = "";
-                cmdInput.textContent = "";
+                cmdInputText = "";
                 return "";
             
             case "help":
@@ -187,5 +232,5 @@
         <pre class="text-base/4">{parseCommand("banner")}</pre>
     </div>
     <span class="prompt">{promptText}</span>
-    <span class="cmd-input break-all" bind:this={cmdInput} ></span>
+    <span class="cmd-input break-all">{cmdInputText}</span>
 </div>
