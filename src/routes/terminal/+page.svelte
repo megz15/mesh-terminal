@@ -22,8 +22,9 @@
                 } else if (e.key == "Backspace") {
                     cmdInput.textContent = cmd.join(" ").slice(0, -1);
                 } else if (e.key == "Enter") {
+                    outputHistory.innerHTML += `<pre>${promptText} ${cmd.join(" ")}`
                     let output = parseCommand(cmd[0], cmd.slice(1));
-                    if (cmd[0] != "clear" && cmd[0] != "") outputHistory.innerHTML += `<pre>${promptText} ${cmd.join(" ")}</div><pre class="text-base/4"> &gt&gt ${output}</pre>`;
+                    if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `</div><pre class="text-base/4"> &gt&gt ${output}</pre>`;
                     cmdInput.textContent = "";
 
                 }
@@ -32,7 +33,7 @@
     });
 
     let userName = "march";
-    let workingDirectoryPath = `/home/${userName}`;
+    let workingDirectoryPath = $state(`/home/${userName}`);
     let virtualFilesystem: VirtualFilesystem = {
         "": {
             "home": {
@@ -67,13 +68,12 @@
         }
     }
 
-    let promptText = `oh no ${userName} is in ${workingDirectoryPath} $`;
+    let promptText = $derived(`oh no ${userName} is in ${workingDirectoryPath} $`);
 
     function parseCommand(cmd: string, args: string[] = []): string {
         switch (cmd) {
 
             case "":
-                outputHistory.innerHTML += `<pre>${promptText} ${cmd}</pre>`;
                 return "";
             
             case "banner":
@@ -92,6 +92,39 @@
     Type 'banner' to see this message again
     Type 'help' for a list of commands
                 `;
+            
+            case "cd":
+                if (args.length != 0 && args[0] != ".") {
+                    if (args.length > 1) {
+                        outputHistory.innerHTML += `</div><pre class="text-base/4"> &gt&gt cd: too many arguments</pre>`;
+                    } else if (args[0] == "..") {
+                        if (workingDirectoryPath == "/") {
+                        } else {
+                            workingDirectoryPath = workingDirectoryPath.split("/").slice(0, -1).join("/") || "/";
+                        }
+                    } else {
+                        let requiredDir: VirtualDirectory = virtualFilesystem[""];
+                        let requiredDirPath = args[0];
+                        let pathExists = true;
+
+                        if (!requiredDirPath.startsWith("/")) {
+                            requiredDirPath = `${workingDirectoryPath}/${requiredDirPath}`;
+                        }
+
+                        requiredDirPath.split("/").slice(1).forEach((dir) => {
+                            if (requiredDir[dir]) {
+                                requiredDir = requiredDir[dir] as VirtualDirectory;
+                            } else {
+                                pathExists = false;
+                            }
+                        });
+
+                        if (!pathExists) {
+                            outputHistory.innerHTML += `</div><pre class="text-base/4"> &gt&gt cd: not a directory: ${requiredDirPath}</pre>`;
+                        } else workingDirectoryPath = requiredDirPath;
+                    }
+                }
+                return "";
             
             case "clear":
                 outputHistory.innerHTML = "";
