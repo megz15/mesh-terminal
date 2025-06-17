@@ -110,6 +110,20 @@
         }
     }
 
+    const envVars: {[envVar:string]:string} = {
+        "USER": userName,
+        "HOME": `/home/${userName}`,
+        "SHELL": "/bin/mesh",
+        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG": "en_US.UTF-8",
+        "TERM": "MESh",
+        "HISTSIZE": "10",
+        "UID": "1000",
+        "GID": "1000",
+        "HOSTNAME": "march3000",
+        "VERSION": "0.0.1",
+    };
+
     let promptText = $derived(`<span class="text-gray-200">oh no <span class="text-yellow-400 font-semibold">${userName}</span> is in <span class="text-blue-400 font-semibold">${workingDirectoryPath}</span> $</span>`);
 
     const availableCommands:{[cmd:string]:string} = {
@@ -119,7 +133,7 @@
         "clear"     : "Clear the terminal output",
         "cowsay"    : "cow ASCII! 🐮",
         "define"    : "[ WIP ] Look up a word definition (not implemented yet)",
-        "echo"      : "[ WIP ] Print text to the terminal (not implemented yet)",
+        "echo"      : "Print text to the terminal",
         "emacs"     : "The extensible, customizable, self-documenting real-time display editor",
         "exit"      : "Exit the terminal (buggy)",
         "git"       : "Version control system",
@@ -131,9 +145,10 @@
         "nano"      : "Pico editor clone with enhancements",
         "neofetch"  : "CLI system information tool",
         "pacman"    : "[ WIP ] Package manager (not implemented yet)",
+        "printenv"  : "Print all environment variables",
         "pwd"       : "Print current working directory",
         "resume"    : "[ WIP ] Show resume (not implemented yet)",
-        "rm"        : "[ WIP ] Remove files or directories (not implemented yet)",
+        "rm"        : "Remove files or directories",
         "sudo"      : "Run a command with superuser privileges",
         "test"      : "O_O",
         "theme"     : "[ WIP ] Change the terminal theme (not implemented yet)",
@@ -296,6 +311,21 @@
             
             case "whoami":
                 return userName;
+
+            case "echo":
+                if (args[0][0] == "$") {
+                    const envVar: string = args[0].slice(1);
+                    if (envVars[envVar]) {
+                        return envVars[envVar];
+                    } else {
+                        return `echo: ${args[0]}: No such environment variable`;
+                    }
+                }
+                    
+                return args.join(" ");
+
+            case "printenv":
+                return `System environment variables:\n${Object.entries(envVars).map(([envVar, val]) => `<span class="text-yellow-400">${envVar}</span>=${val}`).join("\n")}`;
             
             case "cowsay":
                 return `
@@ -313,7 +343,7 @@
                 }
             
             case "exit":
-                return "One does not simply exit MESh.";
+                return "One does not simply exit MESh. Have you tried REISUB?";
             
             case "neofetch":
                 return "Neofetch has been deprecated.\nPlease use 'banner' instead.";
