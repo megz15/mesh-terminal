@@ -2,7 +2,7 @@ import { commands } from "./allCommandsBarrel";
 
 export default function help(args: string[]): string {
     if (args.length === 0) {
-        return `Available commands:\n${
+        return `[ ${Object.keys(commands).length} ] Available commands:\n${
             Object.entries(commands)
                 .map(
                     ([name, {man}]) => `\t<span class="text-yellow-400">${

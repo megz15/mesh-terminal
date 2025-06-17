@@ -4,12 +4,20 @@
     import { commands } from "./commands/allCommandsBarrel";
 
     let outputHistory: HTMLDivElement;
+    let inputContainer: HTMLDivElement;
     let cursorPosition = $state(0);
+
+    function scrollToBottom() {
+        requestAnimationFrame(() => {
+            inputContainer?.scrollIntoView({ behavior: "smooth", block: "end" });
+        });
+    }
 
     onMount(() => {
         window.onload = () => {
             window.addEventListener("keydown", (e) => {
                 e.preventDefault();
+                scrollToBottom();
                 const cmd = cmdInputText["value"].trim().split(" ");
                 switch (e.key) {
 
@@ -29,10 +37,13 @@
                     case "Enter":
                         const promptText = getPromptText();
                         outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${cmd.join(" ")}</pre>`;
+                        
                         const output = parseCommand(cmd[0], cmd.slice(1));
+                        
                         if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap"> &gt&gt ${output}</pre>`;
                         cmdInputText["value"] = "";
                         cursorPosition = 0;
+
                         break;
                     
                     case "ArrowLeft":
@@ -89,7 +100,7 @@
     }
 </script>
 
-<div class="input">
+<div class="input" bind:this={inputContainer}>
     <div id="outputHistory" bind:this={outputHistory}>
         <pre class="break-all whitespace-pre-wrap">{@html parseCommand("banner")}</pre>
     </div>

@@ -43,6 +43,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         man: "cow ASCII! 🐮",
         cmd: cowsay,
     },
+    define: {
+        man: "[ WIP ] Look up a word definition (not implemented yet)",
+        cmd: () => "[ WIP ] Look up a word definition (not implemented yet)",
+    },
     echo: {
         man: "Print text to the terminal",
         cmd: echo,
@@ -63,6 +67,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         man: "Show this message",
         cmd: help,
     },
+    history: {
+        man: "[ WIP ] Show command history (not implemented yet)",
+        cmd: () => "[ WIP ] Show command history (not implemented yet)",
+    },
     ls: {
         man: "List files in the specified directory (or current directory if none specified)",
         cmd: ls,
@@ -70,6 +78,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     man: {
         man: "Show manual pages. Alternatively, use `help`",
         cmd: man,
+    },
+    matrix: {
+        man: "[ WIP ] 🚫🥄 (not implemented yet)",
+        cmd: () => "[ WIP ] 🚫🥄 (not implemented yet)",
     },
     nano: {
         man: "Nano, the Pico editor clone with enhancements",
@@ -79,6 +91,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         man: "CLI system information tool",
         cmd: neofetch,
     },
+    pacman: {
+        man: "[ WIP ] Package manager (not implemented yet)",
+        cmd: () => "[ WIP ] Package manager (not implemented yet)",
+    },
     printenv: {
         man: "Print all environment variables",
         cmd: printenv,
@@ -86,6 +102,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     pwd: {
         man: "Print current working directory",
         cmd: pwd,
+    },
+    resume: {
+        man: "[ WIP ] Show resume (not implemented yet)",
+        cmd: () => "[ WIP ] Show resume (not implemented yet)",
     },
     rm: {
         man: "Remove files or directories",
@@ -98,6 +118,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     test: {
         man: "O_O",
         cmd: test,
+    },
+    theme: {
+        man: "[ WIP ] Change the terminal theme (not implemented yet)",
+        cmd: () => "[ WIP ] Change the terminal theme (not implemented yet)",
     },
     vim: {
         man: "Vi Improved, a highly configurable, improved version of the vi text editor",

@@ -1,9 +1,5 @@
 import type { VirtualFilesystem } from "./types";
 
-// export function setWorkingDirectoryPath(path: string) {
-//     workingDirectoryPath = path;
-// }
-
 export function getPromptText(): string {
     return promptText;
 }
@@ -61,17 +57,3 @@ export const envVars: Record<string, string> = {
     "HOSTNAME": "march3000",
     "VERSION": "0.0.1",
 };
-
-export const availableCommands: Record<string, string> = {
-    
-    "define"    : "[ WIP ] Look up a word definition (not implemented yet)",
-    "history"   : "[ WIP ] Show command history (not implemented yet)",
-    "matrix"    : "[ WIP ] 🚫🥄 (not implemented yet)",
-    "pacman"    : "[ WIP ] Package manager (not implemented yet)",
-    "resume"    : "[ WIP ] Show resume (not implemented yet)",
-    "theme"     : "[ WIP ] Change the terminal theme (not implemented yet)",
-
-    "sudo"      : "Run a command with superuser privileges",
-    "test"      : "O_O",
-    "whoami"    : "Show the current user",
-}
