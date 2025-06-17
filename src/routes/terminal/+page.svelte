@@ -1,19 +1,24 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getPromptText, cmdInputText } from "./system.svelte";
+    import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE } from "./system.svelte";
     import { commands } from "./commands/allCommandsBarrel";
 
     let outputHistory: HTMLDivElement;
     let inputContainer: HTMLDivElement;
     let cursorPosition = $state(0);
 
-    function scrollToBottom() {
-        requestAnimationFrame(() => {
-            inputContainer?.scrollIntoView({ behavior: "smooth", block: "end" });
-        });
-    }
-
     onMount(() => {
+        const savedHistory = localStorage.getItem("MESh_commandHistory");
+        if (savedHistory) {
+            try {
+                commandHistory["value"] = JSON.parse(savedHistory);
+            } catch (e) {
+                console.error(e);
+                commandHistory["value"] = [];
+            }
+        } else {
+            commandHistory["value"] = [];
+        }
         window.onload = () => {
             window.addEventListener("keydown", (e) => {
                 e.preventDefault();
@@ -36,7 +41,16 @@
                     
                     case "Enter":
                         const promptText = getPromptText();
-                        outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${cmd.join(" ")}</pre>`;
+                        const fullCommand = cmd.join(" ");
+                        outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${fullCommand}</pre>`;
+
+                        if (fullCommand) {
+                            commandHistory["value"].push(fullCommand);
+                            if (commandHistory["value"].length > HISTSIZE) commandHistory["value"].shift();
+                            localStorage.setItem("MESh_commandHistory", JSON.stringify(commandHistory["value"]));
+                        }
+
+                        commandHistoryIndex["value"] = -1;
                         
                         const output = parseCommand(cmd[0], cmd.slice(1));
                         
@@ -52,6 +66,31 @@
                     
                     case "ArrowRight":
                         if (cursorPosition < cmdInputText["value"].length) cursorPosition++;
+                        break;
+                    
+                    case "ArrowUp":
+                        if (commandHistory["value"].length > 0) {
+                            if (commandHistoryIndex["value"] === -1) {
+                                commandHistoryIndex["value"] = commandHistory["value"].length - 1;
+                            } else if (commandHistoryIndex["value"] > 0) {
+                                commandHistoryIndex["value"]--;
+                            }
+                            cmdInputText["value"] = commandHistory["value"][commandHistoryIndex["value"]];
+                            cursorPosition = cmdInputText["value"].length;
+                        }
+                        break;
+
+                    case "ArrowDown":
+                        if (commandHistory["value"].length > 0 && commandHistoryIndex["value"] !== -1) {
+                            if (commandHistoryIndex["value"] < commandHistory["value"].length - 1) {
+                                commandHistoryIndex["value"]++;
+                                cmdInputText["value"] = commandHistory["value"][commandHistoryIndex["value"]];
+                            } else {
+                                commandHistoryIndex["value"] = -1;
+                                cmdInputText["value"] = "";
+                            }
+                            cursorPosition = cmdInputText["value"].length;
+                        }
                         break;
                     
                     case "Home":
@@ -78,12 +117,17 @@
         }
     });
 
+    function scrollToBottom() {
+        requestAnimationFrame(() => {
+            inputContainer?.scrollIntoView({ behavior: "smooth", block: "end" });
+        });
+    }
+
     function parseCommand(cmd: string, args: string[] = []): string {
         if (cmd in commands) {
             return commands[cmd]["cmd"](args);
         } else return `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
     }
-
 
     function highlightCursor(cmdInputText: string, cursorPosition: number) {
         const cursorBound = Math.max(0, Math.min(cursorPosition, cmdInputText.length));

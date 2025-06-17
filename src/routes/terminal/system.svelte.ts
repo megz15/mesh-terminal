@@ -8,6 +8,10 @@ export const userName = "march";
 export let workingDirectoryPath: {value:string} = $state({ value: `/home/${userName}`}); // using the value key workaround for now
 const promptText = $derived(`<span class="text-gray-200">oh no <span class="text-yellow-400 font-semibold">${userName}</span> is in <span class="text-blue-400 font-semibold">${workingDirectoryPath["value"]}</span> $</span>`);
 
+export let commandHistory: {value: string[]} = $state({ value: [] });
+export let commandHistoryIndex: {value: number} = $state({ value: -1 });
+export const HISTSIZE = 100;
+
 export let cmdInputText: {value: string} = $state({ value: "" });
 
 export const virtualFilesystem: VirtualFilesystem = {

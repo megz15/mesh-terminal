@@ -2,12 +2,14 @@ import banner from "./banner";
 import cat from "./cat";
 import cd from "./cd";
 import clear from "./clear";
+import clshist from "./clshist";
 import cowsay from "./cowsay";
 import echo from "./echo";
 import emacs from "./emacs";
 import exit from "./exit";
 import git from "./git";
 import help from "./help";
+import hist from "./hist";
 import ls from "./ls";
 import man from "./man";
 import nano from "./nano";
@@ -19,6 +21,8 @@ import sudo from "./sudo";
 import test from "./test";
 import vim from "./vim";
 import whoami from "./whoami";
+
+import { HISTSIZE } from "../system.svelte";
 
 type Command = (args: string[]) => string;
 
@@ -38,6 +42,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     clear: {
         man: "Clear the terminal output",
         cmd: clear,
+    },
+    clshist: {
+        man: `Clear session command history <span class="text-red-400">(HISTSIZE = ${HISTSIZE})</span>`,
+        cmd: clshist,
     },
     cowsay: {
         man: "cow ASCII! 🐮",
@@ -67,9 +75,9 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         man: "Show this message",
         cmd: help,
     },
-    history: {
-        man: "[ WIP ] Show command history (not implemented yet)",
-        cmd: () => "[ WIP ] Show command history (not implemented yet)",
+    hist: {
+        man: `Show command history <span class="text-red-400">(HISTSIZE = ${HISTSIZE})</span>`,
+        cmd: hist,
     },
     ls: {
         man: "List files in the specified directory (or current directory if none specified)",
