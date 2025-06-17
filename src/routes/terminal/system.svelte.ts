@@ -64,30 +64,14 @@ export const envVars: Record<string, string> = {
 
 export const availableCommands: Record<string, string> = {
     
-    
-
-
-    "cowsay"    : "cow ASCII! 🐮",
     "define"    : "[ WIP ] Look up a word definition (not implemented yet)",
-    "echo"      : "Print text to the terminal",
-    "emacs"     : "The extensible, customizable, self-documenting real-time display editor",
-    "exit"      : "Exit the terminal (buggy)",
-    "git"       : "Version control system",
     "history"   : "[ WIP ] Show command history (not implemented yet)",
-    "help"      : "Show this message",
-    "ls"        : "List files in the specified directory (or current directory if none specified)",
-    "man"       : "Show manual pages",
     "matrix"    : "[ WIP ] 🚫🥄 (not implemented yet)",
-    "nano"      : "Pico editor clone with enhancements",
-    "neofetch"  : "CLI system information tool",
     "pacman"    : "[ WIP ] Package manager (not implemented yet)",
-    "printenv"  : "Print all environment variables",
-    "pwd"       : "Print current working directory",
     "resume"    : "[ WIP ] Show resume (not implemented yet)",
-    "rm"        : "Remove files or directories",
+    "theme"     : "[ WIP ] Change the terminal theme (not implemented yet)",
+
     "sudo"      : "Run a command with superuser privileges",
     "test"      : "O_O",
-    "theme"     : "[ WIP ] Change the terminal theme (not implemented yet)",
-    "vim"       : "Vi Improved, a highly configurable, improved version of the vi text editor",
     "whoami"    : "Show the current user",
 }
