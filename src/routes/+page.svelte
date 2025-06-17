@@ -1,3 +1,7 @@
+<svelte:head>
+    <title>MESh - v0.0.1</title> 
+</svelte:head>
+
 <script lang="ts">
     import { onMount } from "svelte";
     import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE } from "$lib/system.svelte";
@@ -23,7 +27,8 @@
             window.addEventListener("keydown", (e) => {
                 e.preventDefault();
                 scrollToBottom();
-                const cmd = cmdInputText["value"].trim().split(" ");
+                const fullCommand = cmdInputText["value"].trim();
+                const cmd = fullCommand.split(" ");
                 switch (e.key) {
 
                     case "Backspace":
@@ -41,7 +46,6 @@
                     
                     case "Enter":
                         const promptText = getPromptText();
-                        const fullCommand = cmd.join(" ");
                         outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${fullCommand}</pre>`;
 
                         if (fullCommand) {
@@ -104,6 +108,20 @@
                     case "Escape":
                         cmdInputText["value"] = "";
                         cursorPosition = 0;
+                        break;
+                    
+                    case "Tab":
+                        if (cmd.length == 1 && fullCommand) {
+                            const suggestions = Object.keys(commands).filter(c => c.startsWith(fullCommand));
+                            if (suggestions.length === 1) {
+                                cmdInputText["value"] = suggestions[0] + " ";
+                                cursorPosition = cmdInputText["value"].length;
+                            } else if (suggestions.length > 1) {
+                                outputHistory.innerHTML += `<pre class="text-gray-400">Suggestions: ${suggestions.join(", ")}</pre>`;
+                            } else {
+                                outputHistory.innerHTML += `<pre class="text-gray-400">No suggestions found for "${fullCommand}"</pre>`;
+                            }
+                        }
                         break;
                     
                     default:
