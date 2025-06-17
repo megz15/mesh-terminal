@@ -112,6 +112,35 @@
 
     let promptText = $derived(`<span class="text-gray-200">oh no <span class="text-yellow-400 font-semibold">${userName}</span> is in <span class="text-blue-400 font-semibold">${workingDirectoryPath}</span> $</span>`);
 
+    const availableCommands:{[cmd:string]:string} = {
+        "banner"    : "Show banner",
+        "cat"       : "[ WIP ] View file contents (partially implemented)",
+        "cd"        : "Change the current working directory",
+        "clear"     : "Clear the terminal output",
+        "cowsay"    : "cow ASCII! 🐮",
+        "define"    : "[ WIP ] Look up a word definition (not implemented yet)",
+        "echo"      : "[ WIP ] Print text to the terminal (not implemented yet)",
+        "emacs"     : "The extensible, customizable, self-documenting real-time display editor",
+        "exit"      : "Exit the terminal (buggy)",
+        "git"       : "Version control system",
+        "history"   : "[ WIP ] Show command history (not implemented yet)",
+        "help"      : "Show this message",
+        "ls"        : "List files in the specified directory (or current directory if none specified)",
+        "man"       : "Show manual pages",
+        "matrix"    : "[ WIP ] 🚫🥄 (not implemented yet)",
+        "nano"      : "Pico editor clone with enhancements",
+        "neofetch"  : "CLI system information tool",
+        "pacman"    : "[ WIP ] Package manager (not implemented yet)",
+        "pwd"       : "Print current working directory",
+        "resume"    : "[ WIP ] Show resume (not implemented yet)",
+        "rm"        : "[ WIP ] Remove files or directories (not implemented yet)",
+        "sudo"      : "Run a command with superuser privileges",
+        "test"      : "O_O",
+        "theme"     : "[ WIP ] Change the terminal theme (not implemented yet)",
+        "vim"       : "Vi Improved, a highly configurable, improved version of the vi text editor",
+        "whoami"    : "Show the current user",
+    }
+
     function parseCommand(cmd: string, args: string[] = []): string {
         switch (cmd) {
 
@@ -138,32 +167,8 @@
             
             case "help":
                 return `Available commands:
-    banner \t\t\t\t Show banner
-    [ WIP ] cat \t\t View file contents (partially implemented)
-    cd \t\t\t\t\t Change the current working directory
-    clear \t\t\t\t Clear the terminal output
-    cowsay \t\t\t\t cow ASCII! 🐮
-    [ WIP ] define \t\t Look up a word definition (not implemented yet)
-    [ WIP ] echo \t\t Print text to the terminal (not implemented yet)
-    emacs \t\t\t\t The extensible, customizable, self-documenting real-time display editor
-    exit \t\t\t\t Exit the terminal (buggy)
-    git \t\t\t\t Version control system
-    [ WIP ] history \t Show command history (not implemented yet)
-    help \t\t\t\t Show this message
-    ls \t\t\t\t\t List files in the specified directory (or current directory if none specified)
-    man \t\t\t\t Show manual pages
-    [ WIP ] matrix \t\t 🚫🥄 (not implemented yet)
-    nano \t\t\t\t Pico editor clone with enhancements
-    neofetch \t\t\t CLI system information tool
-    [ WIP ] pacman \t\t Package manager (not implemented yet)
-    pwd \t\t\t\t Print current working directory
-    [ WIP ] resume \t\t Show resume (not implemented yet)
-    [ WIP ] rm \t\t\t Remove files or directories (not implemented yet)
-    sudo \t\t\t\t Run a command with superuser privileges
-    test \t\t\t\t O_O
-    [ WIP ] theme \t\t Change the terminal theme (not implemented yet)
-    vim \t\t\t\t Vi Improved, a highly configurable, improved version of the vi text editor
-    whoami \t\t\t\t Show the current user`;
+                \n${Object.entries(availableCommands).map(([cmd, desc]) => `\t<span class="text-yellow-400">${cmd}:</span> ${desc}`).join("\n").replaceAll("[ WIP ]", "<span class='text-red-400'>[ WIP ]</span>")}
+                \n`;
 
             case "cat":
                 if (args.length == 0) {
