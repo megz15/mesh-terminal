@@ -9,8 +9,10 @@ export function getPromptText(): string {
 }
 
 export const userName = "march";
-export let workingDirectoryPath:{value:string} = $state({ value: `/home/${userName}`}); // using the value key workaround for now
+export let workingDirectoryPath: {value:string} = $state({ value: `/home/${userName}`}); // using the value key workaround for now
 const promptText = $derived(`<span class="text-gray-200">oh no <span class="text-yellow-400 font-semibold">${userName}</span> is in <span class="text-blue-400 font-semibold">${workingDirectoryPath["value"]}</span> $</span>`);
+
+export let cmdInputText: {value: string} = $state({ value: "" });
 
 export const virtualFilesystem: VirtualFilesystem = {
     "": {
@@ -46,7 +48,7 @@ export const virtualFilesystem: VirtualFilesystem = {
     }
 }
 
-export const envVars: {[envVar:string]:string} = {
+export const envVars: Record<string, string> = {
     "USER": userName,
     "HOME": `/home/${userName}`,
     "SHELL": "/bin/mesh",
@@ -60,11 +62,11 @@ export const envVars: {[envVar:string]:string} = {
     "VERSION": "0.0.1",
 };
 
-export const availableCommands:{[cmd:string]:string} = {
-    "banner"    : "Show banner",
-    "cat"       : "[ WIP ] View file contents (partially implemented)",
-    "cd"        : "Change the current working directory",
-    "clear"     : "Clear the terminal output",
+export const availableCommands: Record<string, string> = {
+    
+    
+
+
     "cowsay"    : "cow ASCII! 🐮",
     "define"    : "[ WIP ] Look up a word definition (not implemented yet)",
     "echo"      : "Print text to the terminal",
