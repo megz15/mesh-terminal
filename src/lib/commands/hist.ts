@@ -1,4 +1,4 @@
-import { commandHistory, HISTSIZE } from "../system.svelte"
+import { commandHistory, HISTSIZE } from "$lib/system.svelte"
 
 export default function hist(): string {
     return `Last ${commandHistory.value.length} commands (max ${HISTSIZE}):

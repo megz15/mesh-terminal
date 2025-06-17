@@ -1,4 +1,4 @@
-import { commandHistory, commandHistoryIndex } from "../system.svelte";
+import { commandHistory, commandHistoryIndex } from "$lib/system.svelte";
 
 export default function clearhist(): string {
     commandHistory.value = [];

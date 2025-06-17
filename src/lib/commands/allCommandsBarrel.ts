@@ -22,7 +22,7 @@ import test from "./test";
 import vim from "./vim";
 import whoami from "./whoami";
 
-import { HISTSIZE } from "../system.svelte";
+import { HISTSIZE } from "$lib/system.svelte";
 
 type Command = (args: string[]) => string;
 

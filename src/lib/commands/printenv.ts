@@ -1,4 +1,4 @@
-import { envVars } from "../system.svelte"
+import { envVars } from "$lib/system.svelte"
 export default function printenv(args: string[]): string {
     return `System environment variables:
 ${Object.entries(envVars).map(

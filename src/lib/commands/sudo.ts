@@ -1,4 +1,4 @@
-import hal from "$lib/hal.webp";
+import hal from "$lib/assets/hal.webp";
 
 export default function sudo(args: string[]): string {
     if (args.length == 0) {

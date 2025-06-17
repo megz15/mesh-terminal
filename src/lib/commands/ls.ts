@@ -1,5 +1,5 @@
-import { virtualFilesystem, workingDirectoryPath } from "../system.svelte";
-import type { VirtualDirectory } from "../types";
+import { virtualFilesystem, workingDirectoryPath } from "$lib/system.svelte";
+import type { VirtualDirectory } from "$lib/types";
 
 export default function ls(args: string[]): string {
     let requiredDir: VirtualDirectory = virtualFilesystem[""];

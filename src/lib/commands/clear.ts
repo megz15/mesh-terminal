@@ -1,4 +1,4 @@
-import { cmdInputText } from "../system.svelte";
+import { cmdInputText } from "$lib/system.svelte";
 
 export default function clear(): string {
     const outputHistory = document.getElementById("outputHistory");

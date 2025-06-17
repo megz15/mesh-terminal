@@ -1,4 +1,4 @@
-import { envVars } from "../system.svelte";
+import { envVars } from "$lib/system.svelte";
 
 export default function echo(args: string[]): string {
     if (args.length === 0) {
