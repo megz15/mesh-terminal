@@ -143,17 +143,22 @@
     cd [directory] \t\t Change the current working directory
     clear \t\t\t\t Clear the terminal output
     cowsay \t\t\t\t cow ASCII! 🐮
+    [ WIP ] define \t\t Look up a word definition (not implemented yet)
     [ WIP ] echo \t\t Print text to the terminal (not implemented yet)
     emacs \t\t\t\t The extensible, customizable, self-documenting real-time display editor
     exit \t\t\t\t Exit the terminal (buggy)
+    git \t\t\t\t Version control system
+    [ WIP ] history \t\t Show command history (not implemented yet)
     help \t\t\t\t Show this message
     ls [directory] \t\t List files in the specified directory (or current directory if none specified)
+    man \t\t\t\t Show manual pages
     [ WIP ] matrix \t\t 🚫🥄 (not implemented yet)
     nano \t\t\t\t Pico editor clone with enhancements
     neofetch \t\t\t CLI system information tool
     [ WIP ] pacman \t\t Package manager (not implemented yet)
     pwd \t\t\t\t Print current working directory
     [ WIP ] resume \t\t Show resume (not implemented yet)
+    [ WIP ] rm \t\t\t Remove files or directories (not implemented yet)
     sudo [command] \t\t Run a command with superuser privileges
     test \t\t\t\t O_O
     [ WIP ] theme \t\t Change the terminal theme (not implemented yet)
@@ -236,11 +241,11 @@
             
             case "cowsay":
                 return `
-^__^
-(oo)\\_______
-(__)\\       )\\/\\
-    ||----w |
-    ||     ||`;
+                    ^__^
+                    (oo)\\_______
+                    (__)\\       )\\/\\
+                        ||----w |
+                        ||     ||`;
 
             case "sudo":
                 if (args.length == 0) {
@@ -263,6 +268,38 @@
             
             case "nano":
                 return "User is too advanced for nano.\n >> Please use 'vim' instead.";
+            
+            case "git":
+                return `<span class="text-red-400">Auto-merging src/components/Button.js
+CONFLICT (content): Merge conflict in src/components/Button.js
+error: could not apply 3f4a1b2... Fix button styling
+hint: You have divergent branches and need to specify how to reconcile them.
+hint: You can do so by running one of the following commands:
+hint:
+hint:   git config pull.rebase false  # merge (the default strategy)
+hint:   git config pull.rebase true   # rebase
+hint:   git config pull.ff only       # fast-forward only
+hint:
+hint: You can replace "git config" with "git branch" to set the merge strategy for a specific branch.
+Auto-merging docs/README.md
+CONFLICT (content): Merge conflict in docs/README.md
+error: Failed to merge in the changes.
+Patch failed at 5 Fix button styling
+The copy of the patch that failed is found in:
+   .git/rebase-apply/patch
+When you have resolved this problem, run "git rebase --continue".
+If you prefer to skip this patch, run "git rebase --skip".
+To check out the original branch and stop rebasing, run "git rebase --abort".</span>`;
+
+            case "man":
+                return `man has been deprecated.
+                \nIn an effort to encourage more meaningful and inclusive language in the MESh project,\nwe have replaced the term \"man\" with \"person\" - or better yet, just Google TFM.
+                \nSee: <a class="text-blue-300 underline" href="https://sfconservancy.org/news/2020/jun/23/gitbranchname/">https://sfconservancy.org/news/2020/jun/23/gitbranchname/</a> for inspiration.
+                \n`;
+            
+            case "rm":
+                return `rm: cannot remove ${args.join(" ")}: User should take a bath
+                \nTip: To remove French language packs system-wide, use:\nsudo rm -fr ./*`;
 
             default:
                 return `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
