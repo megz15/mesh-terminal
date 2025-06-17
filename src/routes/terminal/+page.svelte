@@ -116,7 +116,7 @@
         switch (cmd) {
 
             case "test":
-                return `${cursorPosition}`;
+                return "Nothing to test here, move along, move along.";
 
             case "":
                 return "";
@@ -139,8 +139,8 @@
             case "help":
                 return `Available commands:
     banner \t\t\t\t Show banner
-    [ WIP ] cat \t\t View file contents (not implemented yet)
-    cd [directory] \t\t Change the current working directory
+    [ WIP ] cat \t\t View file contents (partially implemented)
+    cd \t\t\t\t\t Change the current working directory
     clear \t\t\t\t Clear the terminal output
     cowsay \t\t\t\t cow ASCII! 🐮
     [ WIP ] define \t\t Look up a word definition (not implemented yet)
@@ -148,9 +148,9 @@
     emacs \t\t\t\t The extensible, customizable, self-documenting real-time display editor
     exit \t\t\t\t Exit the terminal (buggy)
     git \t\t\t\t Version control system
-    [ WIP ] history \t\t Show command history (not implemented yet)
+    [ WIP ] history \t Show command history (not implemented yet)
     help \t\t\t\t Show this message
-    ls [directory] \t\t List files in the specified directory (or current directory if none specified)
+    ls \t\t\t\t\t List files in the specified directory (or current directory if none specified)
     man \t\t\t\t Show manual pages
     [ WIP ] matrix \t\t 🚫🥄 (not implemented yet)
     nano \t\t\t\t Pico editor clone with enhancements
@@ -159,11 +159,64 @@
     pwd \t\t\t\t Print current working directory
     [ WIP ] resume \t\t Show resume (not implemented yet)
     [ WIP ] rm \t\t\t Remove files or directories (not implemented yet)
-    sudo [command] \t\t Run a command with superuser privileges
+    sudo \t\t\t\t Run a command with superuser privileges
     test \t\t\t\t O_O
     [ WIP ] theme \t\t Change the terminal theme (not implemented yet)
     vim \t\t\t\t Vi Improved, a highly configurable, improved version of the vi text editor
     whoami \t\t\t\t Show the current user`;
+
+            case "cat":
+                if (args.length == 0) {
+                    return "cat: No file specified";
+                } else {
+                    let requiredDir: VirtualDirectory = virtualFilesystem[""];
+                    let requiredFilePath = args[0];
+                    let pathExists = true;
+
+                    if (!requiredFilePath.startsWith("/")) {
+                        requiredFilePath = `${workingDirectoryPath}/${requiredFilePath}`;
+                    }
+
+                    requiredFilePath.split("/").slice(1,-1).forEach((dir) => {
+                        if (requiredDir[dir]) {
+                            requiredDir = requiredDir[dir] as VirtualDirectory;
+                        } else {
+                            pathExists = false;
+                        }
+                    });
+
+                    if (!pathExists) {
+                        return `cat: ${requiredFilePath}: No such file or directory`;
+                    } else if (requiredDir.files && requiredDir.files.includes(requiredFilePath.split("/").pop()!)) {
+                        return `Contents of ${requiredFilePath}:\nMap simulated file content in the future.
+                        \nPlaceholder:<div class="text-base/3.75">
+⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⣼⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣠⣤⣤⣼⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀
+⠀⠀⠀⢀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀
+⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀
+⠀⠀⠀⠘⣿⣿⣿⣿⠟⠁⠀⠀⠀⠹⣿⣿⣿⣿⣿⠟⠁⠀⠀⠹⣿⣿⡿⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣿⣿⣿⡇⠀⠀⠀⢼⣿⠀⢿⣿⣿⣿⣿⠀⣾⣷⠀⠀⢿⣿⣷⠀⠀⠀⠀⠀
+⠀⠀⠀⢠⣿⣿⣿⣷⡀⠀⠀⠈⠋⢀⣿⣿⣿⣿⣿⡀⠙⠋⠀⢀⣾⣿⣿⠀⠀⠀⠀⠀
+⢀⣀⣀⣀⣿⣿⣿⣿⣿⣶⣶⣶⣶⣿⣿⣿⣿⣾⣿⣷⣦⣤⣴⣿⣿⣿⣿⣤⠤⢤⣤⡄
+⠈⠉⠉⢉⣙⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⣀⣀⣀⡀⠀
+⠐⠚⠋⠉⢀⣬⡿⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⣥⣀⡀⠈⠀⠈⠛
+⠀⠀⠴⠚⠉⠀⠀⠀⠉⠛⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⠋⠁⠀⠀⠀⠉⠛⠢⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀meow⠀⠀⠀ 
+⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇</div>⠀`;
+                    } else {
+                        return `cat: ${requiredFilePath}: Is a directory`;
+                    }
+                }
             
             case "cd":
                 if (args.length != 0 && args[0] != ".") {
