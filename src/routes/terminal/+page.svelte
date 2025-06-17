@@ -1,14 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
-
-    type VirtualDirectory = {
-        files?: string[];
-        [subdir: string]: VirtualDirectory | string[] | undefined;
-    };
-
-    type VirtualFilesystem = {
-        [dir: string]: VirtualDirectory;
-    };
+    import {userName, workingDirectoryPath, getPromptText, virtualFilesystem, envVars, availableCommands} from "./system.svelte";
+    import type { VirtualDirectory } from "./types";
 
     let cmdInputText = $state("");
     let outputHistory: HTMLDivElement;
@@ -18,7 +11,7 @@
         window.onload = () => {
             window.addEventListener("keydown", (e) => {
                 e.preventDefault();
-                let cmd = cmdInputText.trim().split(" ");
+                const cmd = cmdInputText.trim().split(" ");
                 switch (e.key) {
 
                     case "Backspace":
@@ -35,8 +28,9 @@
                         break;
                     
                     case "Enter":
+                        const promptText = getPromptText();
                         outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${cmd.join(" ")}</pre>`;
-                        let output = parseCommand(cmd[0], cmd.slice(1));
+                        const output = parseCommand(cmd[0], cmd.slice(1));
                         if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap"> &gt&gt ${output}</pre>`;
                         cmdInputText = "";
                         cursorPosition = 0;
@@ -73,88 +67,6 @@
             })
         }
     });
-
-    let userName = "march";
-    let workingDirectoryPath = $state(`/home/${userName}`);
-    let virtualFilesystem: VirtualFilesystem = {
-        "": {
-            "home": {
-                [userName]: {
-                    ".secret": {},
-                    "Documents": {
-                        files: ["resume.pdf", "env.txt"]
-                    },
-                    "Pictures": {
-                        files: ["canine.jpg", "feline.png"]
-                    },
-                    "Music": {
-                        files: ["daftendirekt.mp3"]
-                    },
-                    "Videos": {
-                        files: ["sarod.mp4"]
-                    },
-                    "Downloads": {
-                        files: ["magisk.img", "bitcoin.exe"]
-                    },
-                    files: ["cat.txt"]
-                }
-            },
-            "tmp": {
-                files: ["cache.tgz"]
-            },
-            "opt": {},
-            "usr": {},
-            "etc": {},
-            "var": {},
-            "boot": {},
-        }
-    }
-
-    const envVars: {[envVar:string]:string} = {
-        "USER": userName,
-        "HOME": `/home/${userName}`,
-        "SHELL": "/bin/mesh",
-        "PATH": "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
-        "LANG": "en_US.UTF-8",
-        "TERM": "MESh",
-        "HISTSIZE": "10",
-        "UID": "1000",
-        "GID": "1000",
-        "HOSTNAME": "march3000",
-        "VERSION": "0.0.1",
-    };
-
-    let promptText = $derived(`<span class="text-gray-200">oh no <span class="text-yellow-400 font-semibold">${userName}</span> is in <span class="text-blue-400 font-semibold">${workingDirectoryPath}</span> $</span>`);
-
-    const availableCommands:{[cmd:string]:string} = {
-        "banner"    : "Show banner",
-        "cat"       : "[ WIP ] View file contents (partially implemented)",
-        "cd"        : "Change the current working directory",
-        "clear"     : "Clear the terminal output",
-        "cowsay"    : "cow ASCII! 🐮",
-        "define"    : "[ WIP ] Look up a word definition (not implemented yet)",
-        "echo"      : "Print text to the terminal",
-        "emacs"     : "The extensible, customizable, self-documenting real-time display editor",
-        "exit"      : "Exit the terminal (buggy)",
-        "git"       : "Version control system",
-        "history"   : "[ WIP ] Show command history (not implemented yet)",
-        "help"      : "Show this message",
-        "ls"        : "List files in the specified directory (or current directory if none specified)",
-        "man"       : "Show manual pages",
-        "matrix"    : "[ WIP ] 🚫🥄 (not implemented yet)",
-        "nano"      : "Pico editor clone with enhancements",
-        "neofetch"  : "CLI system information tool",
-        "pacman"    : "[ WIP ] Package manager (not implemented yet)",
-        "printenv"  : "Print all environment variables",
-        "pwd"       : "Print current working directory",
-        "resume"    : "[ WIP ] Show resume (not implemented yet)",
-        "rm"        : "Remove files or directories",
-        "sudo"      : "Run a command with superuser privileges",
-        "test"      : "O_O",
-        "theme"     : "[ WIP ] Change the terminal theme (not implemented yet)",
-        "vim"       : "Vi Improved, a highly configurable, improved version of the vi text editor",
-        "whoami"    : "Show the current user",
-    }
 
     function parseCommand(cmd: string, args: string[] = []): string {
         switch (cmd) {
@@ -194,7 +106,7 @@
                     let pathExists = true;
 
                     if (!requiredFilePath.startsWith("/")) {
-                        requiredFilePath = `${workingDirectoryPath}/${requiredFilePath}`;
+                        requiredFilePath = `${workingDirectoryPath["value"]}/${requiredFilePath}`;
                     }
 
                     requiredFilePath.split("/").slice(1,-1).forEach((dir) => {
@@ -243,9 +155,9 @@
                     if (args.length > 1) {
                         outputHistory.innerHTML += `</div><pre class="break-all whitespace-pre-wrap"> &gt&gt cd: too many arguments</pre>`;
                     } else if (args[0] == "..") {
-                        if (workingDirectoryPath == "/") {
+                        if (workingDirectoryPath["value"] == "/") {
                         } else {
-                            workingDirectoryPath = workingDirectoryPath.split("/").slice(0, -1).join("/") || "/";
+                            workingDirectoryPath["value"] = workingDirectoryPath["value"].split("/").slice(0, -1).join("/") || "/";
                         }
                     } else {
                         let requiredDir: VirtualDirectory = virtualFilesystem[""];
@@ -253,7 +165,7 @@
                         let pathExists = true;
 
                         if (!requiredDirPath.startsWith("/")) {
-                            requiredDirPath = `${workingDirectoryPath}/${requiredDirPath}`;
+                            requiredDirPath = `${workingDirectoryPath["value"]}/${requiredDirPath}`;
                         }
 
                         requiredDirPath.split("/").slice(1).forEach((dir) => {
@@ -266,21 +178,21 @@
 
                         if (!pathExists) {
                             outputHistory.innerHTML += `</div><pre class="break-all whitespace-pre-wrap"> &gt&gt cd: not a directory: ${requiredDirPath}</pre>`;
-                        } else workingDirectoryPath = requiredDirPath;
+                        } else workingDirectoryPath["value"] = requiredDirPath;
                     }
                 }
                 return "";
 
             case "ls":
                 let requiredDir: VirtualDirectory = virtualFilesystem[""];
-                let requiredDirPath = workingDirectoryPath;
+                let requiredDirPath = workingDirectoryPath["value"];
                 let pathExists = true;
                 
                 if (args.length != 0) {
                     requiredDirPath = args.at(-1)!;
 
                     if (!requiredDirPath.startsWith("/")) {
-                        requiredDirPath = `${workingDirectoryPath}/${requiredDirPath}`;
+                        requiredDirPath = `${workingDirectoryPath["value"]}/${requiredDirPath}`;
                     }
                 }
 
@@ -307,7 +219,7 @@
                 return "";    
 
             case "pwd":
-                return workingDirectoryPath;
+                return workingDirectoryPath["value"];
             
             case "whoami":
                 return userName;
@@ -414,6 +326,6 @@ To check out the original branch and stop rebasing, run "git rebase --abort".</s
     <div class="output-history" bind:this={outputHistory}>
         <pre class="break-all whitespace-pre-wrap">{@html parseCommand("banner")}</pre>
     </div>
-    <span class="prompt">{@html promptText}</span>
+    <span class="prompt">{@html getPromptText()}</span>
     <span class="cmd-input break-all text-gray-200">{@html highlightCursor(cmdInputText, cursorPosition)}</span>
 </div>
