@@ -3,14 +3,14 @@ import type { VirtualDirectory } from "$lib/types";
 
 export default function ls(args: string[]): string {
     let requiredDir: VirtualDirectory = virtualFilesystem[""];
-    let requiredDirPath = workingDirectoryPath["value"];
+    let requiredDirPath = workingDirectoryPath.value;
     let pathExists = true;
     
     if (args.length != 0) {
         requiredDirPath = args.at(-1)!;
 
         if (!requiredDirPath.startsWith("/")) {
-            requiredDirPath = `${workingDirectoryPath["value"]}/${requiredDirPath}`;
+            requiredDirPath = `${workingDirectoryPath.value}/${requiredDirPath}`;
         }
     }
 

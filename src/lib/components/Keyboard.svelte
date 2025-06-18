@@ -1,34 +1,41 @@
-<svelte:head>
-    <title>MESh - v0.0.1</title> 
-</svelte:head>
-
 <script lang="ts">
     import { onMount } from "svelte";
     import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE, cursorPosition } from "$lib/system.svelte";
     import { commands } from "$lib/commands/allCommandsBarrel";
 
-    let outputHistory: HTMLDivElement;
-    let inputContainer: HTMLDivElement;
+    let isShifted = false;
 
+    let outputHistory: HTMLDivElement;
     onMount(() => {
-        const savedHistory = localStorage.getItem("MESh_commandHistory");
-        if (savedHistory) {
-            try {
-                commandHistory.value = JSON.parse(savedHistory);
-            } catch (e) {
-                console.error(e);
-                commandHistory.value = [];
-            }
-        } else {
-            commandHistory.value = [];
-        }
-        window.onload = () => {
-            window.addEventListener("keydown", (e) => {
-                e.preventDefault();
-                scrollToBottom();
+        outputHistory = document.getElementById("outputHistory") as HTMLDivElement;
+    })
+
+    const keyRows = [
+        ['Esc','1','2','3','4','5','6','7','8','9','0','-','='],
+        ['Tab','q','w','e','r','t','y','u','i','o','p','[',']'],
+        ['Shift','a','s','d','f','g','h','j','k','l',';','\'','\\'],
+        ['Home','End','z','x','c','v','b','n','m',',','.','/'],
+        ['←','↑','↓','→','Space','Enter','Backspace','Del'],
+    ];
+
+    const shiftedKeyRows = [
+        ['Esc','!','@','#','₹','%','^','&','*','(',')','_','+'],
+        ['Tab','Q','W','E','R','T','Y','U','I','O','P','{','}'],
+        ['Shift','A','S','D','F','G','H','J','K','L',':','"','|'],
+        ['Home','Nether','Z','X','C','V','B','N','M','<','>','?'],
+        ['←','↑','↓','→', 'Space', 'Enter', 'Backspace', 'Del'],
+    ];
+</script>
+
+<div class="flex flex-col gap-1.5 pt-4 max-sm:mb-10">
+    {#each isShifted ? shiftedKeyRows : keyRows as row}
+        <div class="flex gap-1.5">
+        {#each row as key}
+            <button class="px-3 py-2 text-lg bg-neutral-950 border border-gray-400 rounded-lg text-gray-200 cursor-pointer"
+            on:click={() => {
                 const fullCommand = cmdInputText.value.trim();
                 const cmd = fullCommand.split(" ");
-                switch (e.key) {
+                switch (key) {
 
                     case "Backspace":
                         if (cursorPosition.value > 0) {
@@ -37,7 +44,7 @@
                         }
                         break;
                     
-                    case "Delete":
+                    case "Del":
                         if (cursorPosition.value < cmdInputText.value.length) {
                             cmdInputText.value = cmdInputText.value.slice(0, cursorPosition.value) + cmdInputText.value.slice(cursorPosition.value + 1);
                         }
@@ -54,8 +61,8 @@
                         }
 
                         commandHistoryIndex.value = -1;
-                        
-                        const output = parseCommand(cmd[0], cmd.slice(1));
+
+                        const output = (cmd[0] in commands) ? commands[cmd[0]]["cmd"](cmd.slice(1)) : `MESh: command not found: <span class="text-red-400 font-semibold">${cmd[0]}</span>`;
                         
                         if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${output}</pre>`;
                         cmdInputText.value = "";
@@ -63,15 +70,15 @@
 
                         break;
                     
-                    case "ArrowLeft":
+                    case "←":
                         if (cursorPosition.value > 0) cursorPosition.value--;
                         break;
                     
-                    case "ArrowRight":
+                    case "→":
                         if (cursorPosition.value < cmdInputText.value.length) cursorPosition.value++;
                         break;
                     
-                    case "ArrowUp":
+                    case "↑":
                         if (commandHistory.value.length > 0) {
                             if (commandHistoryIndex.value === -1) {
                                 commandHistoryIndex.value = commandHistory.value.length - 1;
@@ -83,7 +90,7 @@
                         }
                         break;
 
-                    case "ArrowDown":
+                    case "↓":
                         if (commandHistory.value.length > 0 && commandHistoryIndex.value !== -1) {
                             if (commandHistoryIndex.value < commandHistory.value.length - 1) {
                                 commandHistoryIndex.value++;
@@ -100,11 +107,12 @@
                         cursorPosition.value = 0;
                         break;
                     
+                    case "Nether":
                     case "End":
                         cursorPosition.value = cmdInputText.value.length;
                         break;
                     
-                    case "Escape":
+                    case "Esc":
                         cmdInputText.value = "";
                         cursorPosition.value = 0;
                         break;
@@ -123,48 +131,26 @@
                         }
                         break;
                     
+                    case "Space":
+                        cmdInputText.value = cmdInputText.value.slice(0, cursorPosition.value) + " " + cmdInputText.value.slice(cursorPosition.value);
+                        cursorPosition.value++;
+                        break;
+                    
+                    case "Shift":
+                        isShifted = !isShifted;
+                        break;
+                    
                     default:
-                        if (e.key.length == 1) {
-                            cmdInputText.value = cmdInputText.value.slice(0, cursorPosition.value) + e.key + cmdInputText.value.slice(cursorPosition.value);
+                        if (key.length == 1) {
+                            cmdInputText.value = cmdInputText.value.slice(0, cursorPosition.value) + key + cmdInputText.value.slice(cursorPosition.value);
                             cursorPosition.value++;
                         }
                         break;
                 }
-            })
-        }
-    });
-
-    function scrollToBottom() {
-        requestAnimationFrame(() => {
-            inputContainer?.scrollIntoView({ behavior: "smooth", block: "end" });
-        });
-    }
-
-    function parseCommand(cmd: string, args: string[] = []): string {
-        if (cmd in commands) {
-            return commands[cmd]["cmd"](args);
-        } else return `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
-    }
-
-    function highlightCursor(cmdInputText: string, cursorPosition: number) {
-        const cursorBound = Math.max(0, Math.min(cursorPosition, cmdInputText.length));
-
-        if (cursorPosition === cmdInputText.length) {
-            return cmdInputText + `<span class="bg-gray-300 text-black animate-[pulse_1s_ease_infinite]">&nbsp</span>`;
-        }
-
-        return (
-            cmdInputText.slice(0, cursorBound)
-            + `<span class="bg-gray-300 text-black animate-[pulse_1s_ease_infinite]">${cmdInputText[cursorBound]}</span>`
-            + cmdInputText.slice(cursorBound + 1)
-        );
-    }
-</script>
-
-<div class="input" bind:this={inputContainer}>
-    <div id="outputHistory" bind:this={outputHistory}>
-        <pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]">{@html parseCommand("banner")}</pre>
-    </div>
-    <span id="prompt">{@html getPromptText()}</span>
-    <span class="cmd-input sm:break-all text-gray-200">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
+            }}>
+                {key}
+            </button>
+        {/each}
+        </div>
+    {/each}
 </div>

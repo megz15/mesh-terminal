@@ -10,7 +10,7 @@ export default function cat(args: string[]): string {
         let pathExists = true;
 
         if (!requiredFilePath.startsWith("/")) {
-            requiredFilePath = `${workingDirectoryPath["value"]}/${requiredFilePath}`;
+            requiredFilePath = `${workingDirectoryPath.value}/${requiredFilePath}`;
         }
 
         requiredFilePath.split("/").slice(1,-1).forEach((dir) => {
