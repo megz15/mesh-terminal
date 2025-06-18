@@ -1,8 +1,9 @@
-export default function cowsay(): string {
+export default function cowsay(args: string[]): string {
     return `
-            ^__^
-            (oo)\\_______
-            (__)\\       )\\/\\
+(${args.join(" ")})
+   │         ^__^
+   ┕━━━━━━━  (oo)\\_______
+             (__)\\       )\\/\\
                 ||----w |
                 ||     ||`;
 }
