@@ -1,18 +1,18 @@
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-const repositoryName = 'mesh-terminal';
-
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
   preprocess: vitePreprocess(),
   kit: {
     adapter: adapter({
+      // building to docs directory and serving from there
+      // was only thing that worked, not from gh-pages branch
       pages: 'docs',
       assets: 'docs',
     }),
     paths: {
-      base: `/${repositoryName}`,
+      base: `/mesh-terminal`,
     },
   }
 };

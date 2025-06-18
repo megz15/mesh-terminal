@@ -46,7 +46,7 @@
                     
                     case "Enter":
                         const promptText = getPromptText();
-                        outputHistory.innerHTML += `<pre class="text-gray-200">${promptText} ${fullCommand}</pre>`;
+                        outputHistory.innerHTML += `<pre class="text-gray-200 font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
 
                         if (fullCommand) {
                             commandHistory["value"].push(fullCommand);
@@ -58,7 +58,7 @@
                         
                         const output = parseCommand(cmd[0], cmd.slice(1));
                         
-                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap"> &gt&gt ${output}</pre>`;
+                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${output}</pre>`;
                         cmdInputText["value"] = "";
                         cursorPosition = 0;
 
@@ -117,9 +117,9 @@
                                 cmdInputText["value"] = suggestions[0] + " ";
                                 cursorPosition = cmdInputText["value"].length;
                             } else if (suggestions.length > 1) {
-                                outputHistory.innerHTML += `<pre class="text-gray-400">Suggestions: ${suggestions.join(", ")}</pre>`;
+                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
                             } else {
-                                outputHistory.innerHTML += `<pre class="text-gray-400">No suggestions found for "${fullCommand}"</pre>`;
+                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
                             }
                         }
                         break;
@@ -164,7 +164,7 @@
 
 <div class="input" bind:this={inputContainer}>
     <div id="outputHistory" bind:this={outputHistory}>
-        <pre class="break-all whitespace-pre-wrap">{@html parseCommand("banner")}</pre>
+        <pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]">{@html parseCommand("banner")}</pre>
     </div>
     <span class="prompt">{@html getPromptText()}</span>
     <span class="cmd-input break-all text-gray-200">{@html highlightCursor(cmdInputText["value"], cursorPosition)}</span>
