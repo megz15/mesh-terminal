@@ -28,6 +28,6 @@ export default function ls(args: string[]): string {
     }
     
     if (!pathExists) {
-        return `ls: cannot access '${requiredDirPath}': No such file or directory`;
+        return `ls: cannot access '${requiredDirPath}': <span class="text-red-400">No such file or directory</span>`;
     } else return ["", ".", "..", ...Object.keys(requiredDir).filter(dir => dir != "files"), ...requiredDir.files || []].join("\n");
 }

@@ -13,7 +13,11 @@ export default function cat(args: string[]): string {
         }
 
         const pathParts = requiredFilePath.split("/").filter(Boolean);
-        const fileName = pathParts.pop();
+        const fileName = pathParts.pop()!;
+
+        if (fileName.startsWith(".")) {
+            return `cat: Illegal action: ${fileName} is not in the sudoers file.\n<span class="text-red-400">This incident will be reported.</span>`;
+        }
 
         pathParts.forEach((dir) => {
             if (requiredDir[dir]) {
@@ -21,7 +25,7 @@ export default function cat(args: string[]): string {
             }
         });
 
-        if (requiredDir.files && requiredDir.files.includes(fileName!)) {
+        if (requiredDir.files && requiredDir.files.includes(fileName)) {
             return `Contents of ${requiredFilePath}:\nMap simulated file content in the future.
             \nPlaceholder:<div class="text-base/3.75">
 ⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀

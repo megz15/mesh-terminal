@@ -110,15 +110,19 @@
                         break;
                     
                     case "Tab":
-                        if (cmd.length == 1 && fullCommand) {
-                            const suggestions = Object.keys(commands).filter(c => c.startsWith(fullCommand));
-                            if (suggestions.length === 1) {
-                                cmdInputText.value = suggestions[0] + " ";
-                                cursorPosition.value = cmdInputText.value.length;
-                            } else if (suggestions.length > 1) {
-                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
+                        if (cmd.length == 1) {
+                            if (fullCommand) {
+                                const suggestions = Object.keys(commands).filter(c => c.startsWith(fullCommand));
+                                if (suggestions.length === 1) {
+                                    cmdInputText.value = suggestions[0] + " ";
+                                    cursorPosition.value = cmdInputText.value.length;
+                                } else if (suggestions.length > 1) {
+                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
+                                } else {
+                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
+                                }
                             } else {
-                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
+                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Type 'help' for a list of commands</pre>`;
                             }
                         }
                         break;

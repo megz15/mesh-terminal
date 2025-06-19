@@ -1,4 +1,4 @@
-import { getPromptText, virtualFilesystem, workingDirectoryPath } from "$lib/system.svelte";
+import { getPromptText, userName, virtualFilesystem, workingDirectoryPath } from "$lib/system.svelte";
 import type { VirtualDirectory } from "$lib/types";
 
 function printToOutputHistory(msg: string): void {
@@ -14,7 +14,7 @@ export function updatePromptText(): void {
 export default function cd(args: string[]): string {
     if (args.length != 0 && args[0] != ".") {
         if (args.length > 1) {
-            printToOutputHistory("cd: too many arguments");
+            printToOutputHistory(`cd: <span class="text-red-400">too many arguments</span>`);
         } else if (args[0] == "..") {
             if (workingDirectoryPath.value == "/") {
             } else {
@@ -28,6 +28,10 @@ export default function cd(args: string[]): string {
 
             if (!requiredDirPath.startsWith("/") && workingDirectoryPath.value != "/") {
                 requiredDirPath = `${workingDirectoryPath.value}/${requiredDirPath}`;
+            }
+
+            if (requiredDirPath.includes("/.")) {
+                printToOutputHistory(`cd: Illegal action: ${userName} is not in the sudoers file.\n<span class="text-red-400">This incident will be reported.</span>`);
             }
 
             requiredDirPath.split("/").slice(1).forEach((dir) => {
@@ -44,7 +48,7 @@ export default function cd(args: string[]): string {
             }
 
             if (!pathExists) {
-                printToOutputHistory(`cd: not a directory: ${requiredDirPath}`);
+                printToOutputHistory(`cd: not a directory: <span class="text-red-400">${requiredDirPath}<span>`);
             } else {
                 workingDirectoryPath.value = requiredDirPath;
                 updatePromptText();

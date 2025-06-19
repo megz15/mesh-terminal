@@ -1,3 +1,4 @@
 export default function neofetch(): string {
-    return "Neofetch has been deprecated.\nPlease use 'banner' instead.";
+    return `<span class="text-red-400">Neofetch has been deprecated.</span>
+Please use 'banner' instead.`;
 }

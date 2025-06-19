@@ -10,7 +10,7 @@ export default function echo(args: string[]): string {
         if (envVars[envVar]) {
             return envVars[envVar];
         } else {
-            return `echo: ${args[0]}: No such environment variable`;
+            return `echo: No such environment variable: <span class="text-red-400">${envVar}</span>`;
         }
     }
         

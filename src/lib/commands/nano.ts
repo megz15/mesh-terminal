@@ -1,3 +1,3 @@
 export default function nano(): string {
-    return "User is too advanced for nano.\n >> Please use 'vim' instead.";
+    return `<span class="text-red-400">User is too advanced for nano.</span>\n >> Please use 'vim' instead.`;
 }
