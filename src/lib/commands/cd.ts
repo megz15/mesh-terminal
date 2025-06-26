@@ -32,6 +32,7 @@ export default function cd(args: string[]): string {
 
             if (requiredDirPath.includes("/.")) {
                 printToOutputHistory(`cd: Illegal action: ${userName} is not in the sudoers file.\n<span class="text-red-400">This incident will be reported.</span>`);
+                return "";
             }
 
             requiredDirPath.split("/").slice(1).forEach((dir) => {

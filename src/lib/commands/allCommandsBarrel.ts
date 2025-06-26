@@ -4,6 +4,7 @@ import cd from "./cd";
 import clear from "./clear";
 import clshist from "./clshist";
 import cowsay from "./cowsay";
+import date from "./date";
 import echo from "./echo";
 import emacs from "./emacs";
 import exit from "./exit";
@@ -50,6 +51,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     cowsay: {
         man: "cow ASCII! 🐮",
         cmd: cowsay,
+    },
+    date: {
+        man: "Show the current date and time",
+        cmd: date,
     },
     define: {
         man: "[ WIP ] Look up a word definition (not implemented yet)",
