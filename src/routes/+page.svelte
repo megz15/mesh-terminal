@@ -31,6 +31,14 @@
         scrollToBottom();
         const fullCommand = cmdInputText.value.trim();
         const cmd = fullCommand.split(" ");
+
+        if (e.key == "c" && e.ctrlKey) {
+            outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${parseCommand("exit")}</pre>`;
+            cmdInputText.value = "";
+            cursorPosition.value = 0;
+            return;
+		}
+
         switch (e.key) {
 
             case "Backspace":

@@ -1,9 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE, cursorPosition } from "$lib/system.svelte";
+    import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE, cursorPosition, programs, toggleKeyboard } from "$lib/system.svelte";
     import { commands } from "$lib/commands/allCommandsBarrel";
+    import { page } from "$app/state";
+    import { goto } from "$app/navigation";
 
     let isShifted = false;
+    let isControlled = false;
+    let isProgram = programs.includes(page.url.pathname.split("/")[2]);
 
     let outputHistory: HTMLDivElement;
     onMount(() => {
@@ -15,7 +19,7 @@
         ['Tab','q','w','e','r','t','y','u','i','o','p','[',']'],
         ['Shift','a','s','d','f','g','h','j','k','l',';','\'','\\'],
         ['Home','End','z','x','c','v','b','n','m',',','.','/'],
-        ['←','↑','↓','→','Space','Enter','Backspace','Del'],
+        ['Ctrl','←','↑','↓','→','Space','Enter','Back','Del'],
     ];
 
     const shiftedKeyRows = [
@@ -23,21 +27,21 @@
         ['Tab','Q','W','E','R','T','Y','U','I','O','P','{','}'],
         ['Shift','A','S','D','F','G','H','J','K','L',':','"','|'],
         ['Home','Nether','Z','X','C','V','B','N','M','<','>','?'],
-        ['←','↑','↓','→', 'Space', 'Enter', 'Backspace', 'Del'],
+        ['Ctrl','←','↑','↓','→', 'Space', 'Enter', 'Back', 'Del'],
     ];
 </script>
 
-<div class="flex flex-col gap-1.5 pt-4 max-sm:mb-10">
+<div class="flex flex-col gap-1.5 pt-4 max-sm:mb-10 {isProgram ? "fixed bottom-4 left-[50%] translate-x-[-50%]" : ""}">
     {#each isShifted ? shiftedKeyRows : keyRows as row}
         <div class="flex gap-1.5">
         {#each row as key}
-            <button class="px-3 py-2 text-lg bg-neutral-950 border border-gray-400 rounded-lg text-gray-200 cursor-pointer"
+            <button disabled={(key == "Ctrl" || key == 'c' || key == "C") ? false : isControlled} class="{(isControlled && !(key == "Ctrl" || key == 'c' || key == "C")) ? "opacity-20 pointer-events-none" : "opacity-100"} px-3 py-2 text-lg bg-neutral-950 border border-gray-400 rounded-lg text-gray-200 cursor-pointer"
             on:click={() => {
                 const fullCommand = cmdInputText.value.trim();
                 const cmd = fullCommand.split(" ");
                 switch (key) {
 
-                    case "Backspace":
+                    case "Back":
                         if (cursorPosition.value > 0) {
                             cmdInputText.value = cmdInputText.value.slice(0, cursorPosition.value - 1) + cmdInputText.value.slice(cursorPosition.value);
                             cursorPosition.value--;
@@ -62,7 +66,23 @@
 
                         commandHistoryIndex.value = -1;
 
-                        const output = (cmd[0] in commands) ? commands[cmd[0]]["cmd"](cmd.slice(1)) : `MESh: command not found: <span class="text-red-400 font-semibold">${cmd[0]}</span>`;
+                        // const output = (cmd[0] in commands) ? commands[cmd[0]]["cmd"](cmd.slice(1)) : `MESh: command not found: <span class="text-red-400 font-semibold">${cmd[0]}</span>`;
+
+                        let output: string;
+
+                        if (cmd[0].startsWith("./")) {
+                            if (programs.includes(cmd[0].slice(2))) {
+                                toggleKeyboard.value = false;
+                                goto(cmd[0].slice(2));
+                                output = `MESh: launching program <span class="text-yellow-400 font-semibold">${cmd[0].slice(2)}</span>`;
+                            } else {
+                                output = `MESh: program not found: <span class="text-red-400 font-semibold">${cmd[0].slice(2)}</span>`;
+                            }
+                        }
+
+                        if (cmd[0] in commands) {
+                            output = commands[cmd[0]]["cmd"](cmd.slice(1));
+                        } else output = `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
                         
                         if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${output}</pre>`;
                         cmdInputText.value = "";
@@ -143,6 +163,25 @@
                     case "Shift":
                         isShifted = !isShifted;
                         break;
+                    
+                    case "Ctrl":
+                        isControlled = !isControlled;
+                        break;
+
+                    case "c":
+                    case "C":
+                        if (isControlled) {
+                            if (isProgram) {
+                                goto("/");
+                            }
+                            else {
+                                outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${commands["exit"]["cmd"]([])}</pre>`;
+                                cmdInputText.value = "";
+                                cursorPosition.value = 0;
+                                isControlled = false;
+                                return;
+                            }
+                        }
                     
                     default:
                         if (key.length == 1) {
