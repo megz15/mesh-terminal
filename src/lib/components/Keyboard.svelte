@@ -31,7 +31,7 @@
     ];
 </script>
 
-<div class="flex flex-col gap-1.5 pt-4 max-sm:mb-10 {isProgram ? "fixed bottom-4 left-[50%] translate-x-[-50%]" : ""}">
+<div class="flex flex-col gap-1.5 pt-4 {isProgram ? "fixed overflow-x-auto bottom-4 max-md:w-screen max-md:left-0 max-md:mb-16 md:left-[50%] md:translate-x-[-50%]" : "max-sm:mb-10"}">
     {#each isShifted ? shiftedKeyRows : keyRows as row}
         <div class="flex gap-1.5">
         {#each row as key}
