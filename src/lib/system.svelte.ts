@@ -64,3 +64,13 @@ export const envVars: Record<string, string> = {
     "HOSTNAME": "march3000",
     "VERSION": "0.0.1",
 };
+
+export const programs: string[] = [
+    "helloWorld",
+    "collatz",
+    "paint",
+    "radio",
+    "resume",
+    "calc",
+    "thunar",
+]
