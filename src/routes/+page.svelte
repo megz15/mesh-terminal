@@ -4,7 +4,7 @@
 
 <script lang="ts">
     import { onMount } from "svelte";
-    import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE, cursorPosition, programs } from "$lib/system.svelte";
+    import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE, cursorPosition, programs, toggleKeyboard } from "$lib/system.svelte";
     import { commands } from "$lib/commands/allCommandsBarrel";
     import { goto } from "$app/navigation";
 
@@ -157,6 +157,7 @@
         if (cmd.startsWith("./")) {
             if (programs.includes(cmd.slice(2))) {
                 window.removeEventListener("keydown", keyInterceptListener);
+                toggleKeyboard.value = false;
                 goto(cmd.slice(2));
                 return `MESh: launching program <span class="text-yellow-400 font-semibold">${cmd.slice(2)}</span>`;
             } else {
