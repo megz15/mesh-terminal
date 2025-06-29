@@ -31,7 +31,7 @@
     ];
 </script>
 
-<div class="flex flex-col gap-1.5 pt-4 {isProgram ? "fixed overflow-x-auto bottom-4 max-md:w-screen max-md:left-0 max-md:mb-16 md:left-[50%] md:translate-x-[-50%]" : "max-sm:mb-10"}">
+<div class="z-50 flex flex-col gap-1.5 pt-4 {isProgram ? "fixed overflow-x-auto bottom-4 max-md:w-screen max-md:left-0 max-md:mb-16 md:left-[50%] md:translate-x-[-50%]" : "max-sm:mb-10"}">
     {#each isShifted ? shiftedKeyRows : keyRows as row}
         <div class="flex gap-1.5">
         {#each row as key}
@@ -72,6 +72,10 @@
 
                         if (cmd[0].startsWith("./")) {
                             if (programs.includes(cmd[0].slice(2))) {
+
+                                // TODO: Fix removeEventListener for keyInterceptListener
+                                //       to prevent multiple keydown inputs
+
                                 toggleKeyboard.value = false;
                                 goto(cmd[0].slice(2));
                                 output = `MESh: launching program <span class="text-yellow-400 font-semibold">${cmd[0].slice(2)}</span>`;
@@ -172,14 +176,16 @@
                     case "C":
                         if (isControlled) {
                             if (isProgram) {
-                                goto("/");
+                                toggleKeyboard.value = false;
+                                goto("/mesh-terminal/");
+                                break;
                             }
                             else {
                                 outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${commands["exit"]["cmd"]([])}</pre>`;
                                 cmdInputText.value = "";
                                 cursorPosition.value = 0;
                                 isControlled = false;
-                                return;
+                                break;
                             }
                         }
                     

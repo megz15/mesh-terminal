@@ -10,7 +10,8 @@
 
 	function keyboardInterruptListener(e: KeyboardEvent) {
 		if (e.key == "c" && e.ctrlKey) {
-			goto("/");
+			toggleKeyboard.value = false;
+			goto("/mesh-terminal/");
 		}
 	}
 
@@ -30,7 +31,7 @@
 {/if}
 
 {#if programs.includes(page.url.pathname.split("/")[2])}
-	<div class="fixed bottom-4 left-4 text-yellow-400 text-lg z-[-1]">
+	<div class="fixed bottom-4 left-4 text-yellow-400 text-sm z-[-1]">
 		Press 'Ctrl + C'<br />to eXit program
 	</div>
 {/if}
