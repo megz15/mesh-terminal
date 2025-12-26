@@ -17,6 +17,7 @@
 		"@sveltejs/kit": "^2.49.2",
 		"@sveltejs/vite-plugin-svelte": "^5.1.1",
 		"@tailwindcss/vite": "^4.1.18",
+		"@types/three": "^0.182.0",
 		"svelte": "^5.46.1",
 		"svelte-check": "^4.3.5",
 		"tailwindcss": "^4.1.18",
@@ -29,6 +30,8 @@
 		]
 	},
 	"dependencies": {
-		"chart.js": "^4.5.1"
+		"@threlte/core": "^8.3.1",
+		"chart.js": "^4.5.1",
+		"three": "^0.182.0"
 	}
 }

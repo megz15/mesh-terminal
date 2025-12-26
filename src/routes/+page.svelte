@@ -1,5 +1,5 @@
 <svelte:head>
-    <title>MESh - v0.0.1</title> 
+    <title>MESh - v0.0.2</title> 
 </svelte:head>
 
 <script lang="ts">

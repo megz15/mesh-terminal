@@ -10,7 +10,7 @@ export default function banner(): string {
     ##:.:: ##: ##:::::::'##::: ##: ##:::: ##:
     ##:::: ##: ########:. ######:: ##:::: ##:
     .:::::..::........:::......:::..:::::..::</div>
-    <span class="font-black text-xl text-yellow-400">M</span>egh's <span class="font-black text-xl text-yellow-400">E</span>mulated <span class="font-black text-xl text-yellow-400">Sh</span>ell -- <span class="text-green-200">v${envVars.VERSION || "0.0.1"}</span>
+    <span class="font-black text-xl text-yellow-400">M</span>egh's <span class="font-black text-xl text-yellow-400">E</span>mulated <span class="font-black text-xl text-yellow-400">Sh</span>ell -- <span class="text-green-200">v${envVars.VERSION || "0.0.2"}</span>
     Type <span class="text-yellow-400">'banner'</span> to see this message again
     Type <span class="text-yellow-400">'help'</span> for a list of <span class="text-green-200">commands</span> and <span class="text-green-200">installed programs</span>
 

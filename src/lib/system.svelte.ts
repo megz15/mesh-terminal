@@ -61,16 +61,17 @@ export const envVars: Record<string, string> = {
     "HISTSIZE": "100",
     "UID": "1000",
     "GID": "1000",
-    "HOSTNAME": "march3000",
-    "VERSION": "0.0.1",
+    "HOSTNAME": "meghraj-goswami",
+    "VERSION": "0.0.2",
 };
 
 export const programs: string[] = [
     "helloWorld",
     "collatz",
-    "paint",
-    "radio",
+    "three",
     "resume",
     "calc",
+    "paint",
+    "radio",
     "thunar",
 ]
