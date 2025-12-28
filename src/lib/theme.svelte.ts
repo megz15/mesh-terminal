@@ -50,7 +50,7 @@ export const themes: Record<string, Theme> = {
         text: {
             primary: "text-gray-100",
             secondary: "text-gray-500",
-            username: "text-cyan-400",
+            username: "text-purple-400",
             path: "text-purple-400",
             success: "text-green-400",
             error: "text-red-500",

@@ -23,6 +23,7 @@ import test from "./test";
 import theme from "./theme";
 import vim from "./vim";
 import whoami from "./whoami";
+import resume from "./resume";
 
 import { HISTSIZE } from "$lib/system.svelte";
 
@@ -119,7 +120,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     },
     resume: {
         man: "[ WIP ] Show resume (not implemented yet)",
-        cmd: () => "[ WIP ] Show resume (not implemented yet)",
+        cmd: resume,
     },
     rm: {
         man: "Remove files or directories",
@@ -134,7 +135,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: test,
     },
     theme: {
-        man: "Change the terminal theme. Usage: theme <name>",
+        man: "Change the terminal theme",
         cmd: theme,
     },
     vim: {
