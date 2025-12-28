@@ -5,8 +5,22 @@
 	import { programs, toggleKeyboard } from "$lib/system.svelte";
 	import { page } from "$app/state";
 	import { afterNavigate, goto } from "$app/navigation";
+	import { onMount } from "svelte";
+	import { currentTheme } from "$lib/theme.svelte";
 
 	let { children } = $props();
+
+	let bodyClasses = $derived(
+        `font-[Jetbrains_Mono] ${currentTheme.value.bg.primary} ${currentTheme.value.text.primary} m-5 mt-14`
+    );
+
+	onMount(() => {
+        document.body.className = bodyClasses
+    });
+
+    $effect(() => {
+        document.body.className = bodyClasses
+    });
 
 	function keyboardInterruptListener(e: KeyboardEvent) {
 		if (e.key == "c" && e.ctrlKey) {

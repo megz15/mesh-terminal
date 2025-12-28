@@ -4,6 +4,7 @@
     import { commands } from "$lib/commands/allCommandsBarrel";
     import { page } from "$app/state";
     import { goto } from "$app/navigation";
+    import { getTheme } from "$lib/theme.svelte";
 
     let isShifted = false;
     let isControlled = false;
@@ -35,7 +36,7 @@
     {#each isShifted ? shiftedKeyRows : keyRows as row}
         <div class="flex gap-1.5">
         {#each row as key}
-            <button disabled={(key == "Ctrl" || key == 'c' || key == "C") ? false : isControlled} class="{(isControlled && !(key == "Ctrl" || key == 'c' || key == "C")) ? "opacity-20 pointer-events-none" : "opacity-100"} px-3 py-2 text-lg bg-neutral-950 border border-gray-400 rounded-lg text-gray-200 cursor-pointer"
+            <button disabled={(key == "Ctrl" || key == 'c' || key == "C") ? false : isControlled} class="{(isControlled && !(key == "Ctrl" || key == 'c' || key == "C")) ? "opacity-20 pointer-events-none" : "opacity-100"} px-3 py-2 text-lg {getTheme().components.keyboardBg} border {getTheme().components.keyboardBorder} rounded-lg {getTheme().text.primary} cursor-pointer"
             on:click={() => {
                 const fullCommand = cmdInputText.value.trim();
                 const cmd = fullCommand.split(" ");
@@ -55,8 +56,9 @@
                         break;
                     
                     case "Enter":
+                        const theme = getTheme();
                         const promptText = getPromptText();
-                        outputHistory.innerHTML += `<pre class="text-gray-200 font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
+                        outputHistory.innerHTML += `<pre class="${theme.text.primary} font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
 
                         if (fullCommand) {
                             commandHistory.value.push(fullCommand);
@@ -78,15 +80,15 @@
 
                                 toggleKeyboard.value = false;
                                 goto(cmd[0].slice(2));
-                                output = `MESh: launching program <span class="text-yellow-400 font-semibold">${cmd[0].slice(2)}</span>`;
+                                output = `MESh: launching program <span class="${theme.text.warning} font-semibold">${cmd[0].slice(2)}</span>`;
                             } else {
-                                output = `MESh: program not found: <span class="text-red-400 font-semibold">${cmd[0].slice(2)}</span>`;
+                                output = `MESh: program not found: <span class="${theme.text.error} font-semibold">${cmd[0].slice(2)}</span>`;
                             }
                         }
 
                         if (cmd[0] in commands) {
                             output = commands[cmd[0]]["cmd"](cmd.slice(1));
-                        } else output = `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
+                        } else output = `MESh: command not found: <span class="${theme.text.error} font-semibold">${cmd}</span>`;
                         
                         if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${output}</pre>`;
                         cmdInputText.value = "";

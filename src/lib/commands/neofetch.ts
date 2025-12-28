@@ -1,4 +1,7 @@
+import { getTheme } from "$lib/theme.svelte"
+
 export default function neofetch(): string {
-    return `<span class="text-red-400">Neofetch has been deprecated.</span>
+    const theme = getTheme();
+    return `<span class="${theme.text.error}">Neofetch has been deprecated.</span>
 Please use 'banner' instead.`;
 }

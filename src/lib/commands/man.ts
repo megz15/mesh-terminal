@@ -1,6 +1,9 @@
+import { getTheme } from "$lib/theme.svelte"
+
 export default function man(): string {
-    return `<span class="text-red-400">man has been deprecated.</span>
+    const theme = getTheme();
+    return `<span class="${theme.text.error}">man has been deprecated.</span>
     \nIn an effort to encourage more meaningful and inclusive language in the MESh project,\nwe have replaced the term \"man\" with \"person\". Better yet, just Google it.
-    \nSee: <a class="text-blue-300 underline" href="https://sfconservancy.org/news/2020/jun/23/gitbranchname/">https://sfconservancy.org/news/2020/jun/23/gitbranchname/</a> for inspiration.
+    \nSee: <a class="${theme.text.info} underline" href="https://sfconservancy.org/news/2020/jun/23/gitbranchname/">https://sfconservancy.org/news/2020/jun/23/gitbranchname/</a> for inspiration.
     \n`;
 }

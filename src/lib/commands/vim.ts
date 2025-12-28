@@ -1,3 +1,6 @@
+import { getTheme } from "$lib/theme.svelte"
+
 export default function vim(): string {
-    return `<span class="text-red-400">User will not be able to exit vim.</span>\n >> Please use 'emacs' instead.`;
+    const theme = getTheme();
+    return `<span class="${theme.text.error}">User will not be able to exit vim.</span>\n >> Please use 'emacs' instead.`;
 }

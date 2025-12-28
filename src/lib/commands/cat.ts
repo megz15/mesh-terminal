@@ -1,9 +1,11 @@
-import { virtualFilesystem, workingDirectoryPath } from "$lib/system.svelte";
-import type { VirtualDirectory } from "$lib/types";
+import { virtualFilesystem, workingDirectoryPath } from "$lib/system.svelte"
+import type { VirtualDirectory } from "$lib/types"
+import { getTheme } from "$lib/theme.svelte"
 
 export default function cat(args: string[]): string {
+    const theme = getTheme()
     if (args.length == 0) {
-        return `cat: <span class="text-red-400">No file specified</span>`;
+        return `cat: <span class="${theme.text.error}">No file specified</span>`;
     } else {
         let requiredDir: VirtualDirectory = virtualFilesystem[""];
         let requiredFilePath = args[0];
@@ -16,7 +18,7 @@ export default function cat(args: string[]): string {
         const fileName = pathParts.pop()!;
 
         if (fileName.startsWith(".")) {
-            return `cat: Illegal action: ${fileName} is not in the sudoers file.\n<span class="text-red-400">This incident will be reported.</span>`;
+            return `cat: Illegal action: ${fileName} is not in the sudoers file.\n<span class="${theme.text.error}">This incident will be reported.</span>`;
         }
 
         pathParts.forEach((dir) => {
@@ -52,7 +54,7 @@ export default function cat(args: string[]): string {
 ⠀⠀⠀⠀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇</div>⠀`;
         } else {
-            return `cat: ${requiredFilePath}: <span class="text-red-400">No such file</span>`;
+            return `cat: ${requiredFilePath}: <span class="${theme.text.error}">No such file</span>`;
         }
     }
 }

@@ -1,3 +1,6 @@
+import { getTheme } from "$lib/theme.svelte"
+
 export default function emacs(): string {
-    return `<span class="text-red-400">Too many packages NOT ENOUGH RAM</span>\n >> Please use 'nano' instead.`;
+    const theme = getTheme()
+    return `<span class="${theme.text.error}">Too many packages NOT ENOUGH RAM</span>\n >> Please use 'nano' instead.`
 }

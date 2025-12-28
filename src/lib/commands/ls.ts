@@ -1,4 +1,5 @@
 import { virtualFilesystem, workingDirectoryPath } from "$lib/system.svelte";
+import { getTheme } from "$lib/theme.svelte";
 import type { VirtualDirectory } from "$lib/types";
 
 export default function ls(args: string[]): string {
@@ -28,6 +29,7 @@ export default function ls(args: string[]): string {
     }
     
     if (!pathExists) {
-        return `ls: cannot access '${requiredDirPath}': <span class="text-red-400">No such file or directory</span>`;
+        const theme = getTheme();
+        return `ls: cannot access '${requiredDirPath}': <span class="${theme.text.error}">No such file or directory</span>`;
     } else return ["", ".", "..", ...Object.keys(requiredDir).filter(dir => dir != "files"), ...requiredDir.files || []].join("\n");
 }

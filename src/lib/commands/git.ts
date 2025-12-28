@@ -1,5 +1,8 @@
+import { getTheme } from "$lib/theme.svelte"
+
 export default function git(): string {
-    return `<span class="text-red-400">Auto-merging src/components/Button.js
+    const theme = getTheme();
+    return `<span class="${theme.text.error}">Auto-merging src/components/Button.js
 CONFLICT (content): Merge conflict in src/components/Button.js
 error: could not apply 3f4a1b2... Fix button styling
 hint: You have divergent branches and need to specify how to reconcile them.

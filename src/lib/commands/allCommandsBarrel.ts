@@ -20,6 +20,7 @@ import pwd from "./pwd";
 import rm from "./rm";
 import sudo from "./sudo";
 import test from "./test";
+import theme from "./theme";
 import vim from "./vim";
 import whoami from "./whoami";
 
@@ -133,8 +134,8 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: test,
     },
     theme: {
-        man: "[ WIP ] Change the terminal theme (not implemented yet)",
-        cmd: () => "[ WIP ] Change the terminal theme (not implemented yet)",
+        man: "Change the terminal theme. Usage: theme <name>",
+        cmd: theme,
     },
     vim: {
         man: "Vi Improved, a highly configurable, improved version of the vi text editor",

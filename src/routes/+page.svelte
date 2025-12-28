@@ -7,6 +7,7 @@
     import { getPromptText, cmdInputText, commandHistory, commandHistoryIndex, HISTSIZE, cursorPosition, programs, toggleKeyboard } from "$lib/system.svelte";
     import { commands } from "$lib/commands/allCommandsBarrel";
     import { goto } from "$app/navigation";
+    import { getTheme } from "$lib/theme.svelte";
 
     let outputHistory: HTMLDivElement;
     let inputContainer: HTMLDivElement;
@@ -33,6 +34,7 @@
         const cmd = fullCommand.split(" ");
 
         if (e.key == "c" && e.ctrlKey) {
+            const theme = getTheme();
             outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${parseCommand("exit")}</pre>`;
             cmdInputText.value = "";
             cursorPosition.value = 0;
@@ -55,8 +57,9 @@
                 break;
             
             case "Enter":
+                const theme = getTheme();
                 const promptText = getPromptText();
-                outputHistory.innerHTML += `<pre class="text-gray-200 font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
+                outputHistory.innerHTML += `<pre class="${theme.text.primary} font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
 
                 if (fullCommand) {
                     commandHistory.value.push(fullCommand);
@@ -122,18 +125,19 @@
             
             case "Tab":
                 if (cmd.length == 1) {
+                    const theme = getTheme();
                     if (fullCommand) {
                         const suggestions = Object.keys(commands).filter(c => c.startsWith(fullCommand));
                         if (suggestions.length == 1) {
                             cmdInputText.value = suggestions[0] + " ";
                             cursorPosition.value = cmdInputText.value.length;
                         } else if (suggestions.length > 1) {
-                            outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
+                            outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
                         } else {
-                            outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
+                            outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
                         }
                     } else {
-                        outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Type 'help' for a list of commands</pre>`;
+                        outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono]">Type 'help' for a list of commands</pre>`;
                     }
                 }
                 break;
@@ -154,32 +158,34 @@
     }
 
     function parseCommand(cmd: string, args: string[] = []): string {
+        const theme = getTheme();
         if (cmd.startsWith("./")) {
             if (programs.includes(cmd.slice(2))) {
                 window.removeEventListener("keydown", keyInterceptListener);
                 toggleKeyboard.value = false;
                 goto(cmd.slice(2));
-                return `MESh: launching program <span class="text-yellow-400 font-semibold">${cmd.slice(2)}</span>`;
+                return `MESh: launching program <span class="${theme.text.warning} font-semibold">${cmd.slice(2)}</span>`;
             } else {
-                return `MESh: program not found: <span class="text-red-400 font-semibold">${cmd.slice(2)}</span>`;
+                return `MESh: program not found: <span class="${theme.text.error} font-semibold">${cmd.slice(2)}</span>`;
             }
         }
 
         if (cmd in commands) {
             return commands[cmd]["cmd"](args);
-        } else return `MESh: command not found: <span class="text-red-400 font-semibold">${cmd}</span>`;
+        } else return `MESh: command not found: <span class="${theme.text.error} font-semibold">${cmd}</span>`;
     }
 
     function highlightCursor(cmdInputText: string, cursorPosition: number) {
+        const theme = getTheme();
         const cursorBound = Math.max(0, Math.min(cursorPosition, cmdInputText.length));
 
         if (cursorPosition == cmdInputText.length) {
-            return cmdInputText + `<span class="bg-gray-300 text-black animate-[pulse_1s_ease_infinite]">&nbsp</span>`;
+            return cmdInputText + `<span class="${theme.bg.cursor} text-black animate-[pulse_1s_ease_infinite]">&nbsp</span>`;
         }
 
         return (
             cmdInputText.slice(0, cursorBound)
-            + `<span class="bg-gray-300 text-black animate-[pulse_1s_ease_infinite]">${cmdInputText[cursorBound]}</span>`
+            + `<span class="${theme.bg.cursor} text-black animate-[pulse_1s_ease_infinite]">${cmdInputText[cursorBound]}</span>`
             + cmdInputText.slice(cursorBound + 1)
         );
     }
@@ -190,5 +196,5 @@
         <pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]">{@html parseCommand("banner")}</pre>
     </div>
     <span id="prompt">{@html getPromptText()}</span>
-    <span class="cmd-input sm:break-all text-gray-200">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
+    <span class="cmd-input sm:break-all {getTheme().text.primary}">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
 </div>
