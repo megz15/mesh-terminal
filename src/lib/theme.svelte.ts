@@ -25,7 +25,7 @@ export interface Theme {
 export const themes: Record<string, Theme> = {
     default: {
         text: {
-            primary: "text-gray-200",
+            primary: "text-green-400",
             secondary: "text-gray-400",
             username: "text-yellow-400",
             path: "text-blue-400",

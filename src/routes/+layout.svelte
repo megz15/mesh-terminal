@@ -50,13 +50,8 @@
 	</div>
 {/if}
 
-<div class="flex justify-end">
-	{#if !programs.includes(page.url.pathname.split("/")[2])}
-		<button
-			onclick={() => (toggleKeyboard.value = !toggleKeyboard.value)}
-			class="px-3 py-2 text-sm bg-neutral-950 border border-gray-400 rounded-lg text-gray-200 cursor-pointer fixed bottom-4 right-4"
-		>
-			Toggle Keyboard
-		</button>
-	{/if}
-</div>
+<style>
+	:global(body) {
+		transition: background-color 1s;
+	}
+</style>

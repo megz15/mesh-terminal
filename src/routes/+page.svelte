@@ -59,7 +59,7 @@
             case "Enter":
                 const theme = getTheme();
                 const promptText = getPromptText();
-                outputHistory.innerHTML += `<pre class="${theme.text.primary} font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
+                outputHistory.innerHTML += `<pre class="text-gray-200 font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
 
                 if (fullCommand) {
                     commandHistory.value.push(fullCommand);
@@ -196,5 +196,5 @@
         <pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]">{@html parseCommand("banner")}</pre>
     </div>
     <span id="prompt">{@html getPromptText()}</span>
-    <span class="cmd-input sm:break-all {getTheme().text.primary}">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
+    <span class="cmd-input sm:break-all text-gray-200">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
 </div>
