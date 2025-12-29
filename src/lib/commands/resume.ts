@@ -27,16 +27,16 @@ M.Sc. <span class="${theme.text.info}">Mathematics</span>
 Shortlist and add later
 
 <div class="w-3/4"><span class="text-lg font-bold ${theme.text.username}">--- PUBLICATIONS ---</span>
-1. <strong>Goswami M.</strong>, et al. (2024). <span class="${theme.text.info}"><em>Future Precipitation Characteristics of Designated Smart Cities of India for Integrated Urban Water Management Under Selected 'Shared Socio-Economic Pathways' of Climatic Variations.</em></span> Presented at SUWM2024.
+1. Goswami M., et al. (2024). <span class="${theme.text.info}"><em>Future Precipitation Characteristics of Designated Smart Cities of India for Integrated Urban Water Management Under Selected 'Shared Socio-Economic Pathways' of Climatic Variations.</em></span><br>Presented at <span class="${theme.text.info}">SUWM2024</span>.
 
-2. <strong>Goswami M.</strong>, et al. (2025). <span class="${theme.text.info}"><em>Performance Comparison of Linear Relation Based and Machine Learning Based Rainfall-Runoff Models for FLow-Simulation for a Data-Scarce River Valley Project.</em></span> Presented at ICCCNet2025.
+2. Goswami M., et al. (2025). <span class="${theme.text.info}"><em>Performance Comparison of Linear Relation Based and Machine Learning Based Rainfall-Runoff Models for FLow-Simulation for a Data-Scarce River Valley Project.</em></span><br>Presented at <span class="${theme.text.info}">ICCCNet2025</span>.
 
-3. <strong>Goswami M.</strong>, et al. (2025). <span class="${theme.text.info}"><em>Impacts of Building Rehabilitation by Horizontal and Vertical Extensions of framed Structures  Risks and Realities.</em></span> Presented at CARRS2025.
+3. Goswami M., et al. (2025). <span class="${theme.text.info}"><em>Impacts of Building Rehabilitation by Horizontal and Vertical Extensions of framed Structures  Risks and Realities.</em></span><br>Presented at <span class="${theme.text.info}">CARRS2025</span>.
 </div>
 <span class="text-lg font-bold ${theme.text.username}">--- WORKSHOPS & LEADERSHIP ---</span>
-• Instructor, <span class="${theme.text.info}"><a href="https://megz15.github.io/intro-to-webdev/" target="_blank" class="underline decoration-dotted">Introduction to Web Development</a> (cruX, BPHC)</span>
-• Co-Instructor, <span class="${theme.text.info}"><a href="https://github.com/megz15/acm-dart-ws" target="_blank" class="underline decoration-dotted">App Dev using Dart / Flutter</a> (Association for Computing Machinery {ACM} BPHC)</span>
-• Co-Instructor, <span class="${theme.text.info}"><a href="https://megz15.github.io/intro-to-p2p/" target="_blank" class="underline decoration-dotted">Introduction to Peer-to-Peer Networking</a> (Society for Open Software {BITS-SOS}, BPHC)</span>
-• Instructor, <span class="${theme.text.info}"><a href="https://megz15.github.io/classical-music-workshop/" target="_blank" class="underline decoration-dotted">Introduction to Classical Music</a> (Swaranjali, BPHC)</span>
+• Instructor, <span class="${theme.text.info}"><a href="https://megz15.github.io/intro-to-webdev/" target="_blank" class="underline decoration-dotted">Introduction to Web Development</a></span> (cruX, BPHC)
+• Co-Instructor, <span class="${theme.text.info}"><a href="https://github.com/megz15/acm-dart-ws" target="_blank" class="underline decoration-dotted">App Dev using Dart / Flutter</a></span> (Association for Computing Machinery {ACM} BPHC)
+• Co-Instructor, <span class="${theme.text.info}"><a href="https://megz15.github.io/intro-to-p2p/" target="_blank" class="underline decoration-dotted">Introduction to Peer-to-Peer Networking</a></span> (Society for Open Software {BITS-SOS}, BPHC)
+• Instructor, <span class="${theme.text.info}"><a href="https://megz15.github.io/classical-music-workshop/" target="_blank" class="underline decoration-dotted">Introduction to Classical Music</a></span> (Swaranjali, BPHC)
 `;
 }
