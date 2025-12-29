@@ -1,10 +1,10 @@
 <script>
-    import { envVars, toggleKeyboard } from '$lib/system.svelte';
-    import { commands } from '$lib/commands/allCommandsBarrel';
-    import { page } from '$app/state';
-    import { getTheme } from '$lib/theme.svelte';
+    import { envVars, toggleKeyboard, isRadioPlaying } from '$lib/system.svelte'
+    import { commands } from '$lib/commands/allCommandsBarrel'
+    import { page } from '$app/state'
+    import { getTheme } from '$lib/theme.svelte'
 
-	let programName = page.url.pathname.split("/")[2];
+	let programName = $derived(page.url.pathname.split("/")[2])
 </script>
 
 <div id="top-bar" class="{getTheme().bg.topBar} rounded-lg border {getTheme().bg.topBarBorder} w-[98%] h-10 fixed top-2 left-1/2 translate-x-[-50%] flex items-center gap-2 pl-4 z-50">
@@ -14,11 +14,25 @@
 	<span class="{getTheme().text.secondary} max-sm:hidden">|</span>
 	<span class="{getTheme().components.topBarText} max-sm:hidden">{programName ? "Ctrl + C to eXit" : "Loaded [" + Object.keys(commands).length + "] commands"}</span>
 	{#if !programName}
-		<div class="ml-auto pr-4">
+		<div class="ml-auto pr-4 flex gap-2">
 			<button
 				type="button"
-				on:click={() => (toggleKeyboard.value = !toggleKeyboard.value)}
-				class="px-3 py-1.5 text-xs rounded-md {getTheme().components.keyboardBg} {getTheme().components.keyboardBorder} border {getTheme().text.primary} cursor-pointer"
+				onclick={() => location.reload()}
+				class="p-3 text-sm rounded-md {getTheme().components.keyboardBg} {getTheme().components.keyboardBorder} border {getTheme().text.primary} cursor-pointer"
+				title="Reload Mesh Terminal"
+			>🔄</button>
+			<button
+				type="button"
+				onclick={() => (isRadioPlaying.value = !isRadioPlaying.value)}
+				class="p-3 text-sm rounded-md {getTheme().components.keyboardBg} {getTheme().components.keyboardBorder} border {getTheme().text.primary} cursor-pointer"
+				title="{isRadioPlaying.value ? 'Pause' : 'Play'} Radio"
+			>
+				{isRadioPlaying.value ? '⏸️' : '▶️'}
+			</button>
+			<button
+				type="button"
+				onclick={() => (toggleKeyboard.value = !toggleKeyboard.value)}
+				class="p-3 text-sm rounded-md {getTheme().components.keyboardBg} {getTheme().components.keyboardBorder} border {getTheme().text.primary} cursor-pointer"
 			>
 				Toggle Keyboard
 			</button>

@@ -2,13 +2,15 @@
 	import "../app.css";
 	import TopBar from "$lib/components/TopBar.svelte";
 	import Keyboard from "$lib/components/Keyboard.svelte";
-	import { programs, toggleKeyboard } from "$lib/system.svelte";
+	import { programs, toggleKeyboard, isRadioPlaying, radioStreamUrl } from "$lib/system.svelte";
 	import { page } from "$app/state";
 	import { afterNavigate, goto } from "$app/navigation";
 	import { onMount } from "svelte";
 	import { currentTheme } from "$lib/theme.svelte";
 
 	let { children } = $props();
+
+	let audioElement: HTMLAudioElement;
 
 	let bodyClasses = $derived(
         `font-[Jetbrains_Mono] ${currentTheme.value.bg.primary} ${currentTheme.value.text.primary} m-5 mt-14`
@@ -34,6 +36,16 @@
 			window.addEventListener("keydown", keyboardInterruptListener);
 		}
 	});
+
+	$effect(() => {
+		if (audioElement) {
+			if (isRadioPlaying.value) {
+				audioElement.play().catch(err => console.error("Radio playback failed:", err));
+			} else {
+				audioElement.pause();
+			}
+		}
+	});
 </script>
 
 <TopBar />
@@ -49,6 +61,8 @@
 		Press 'Ctrl + C'<br />or Go Back 1 pg<br />to eXit program
 	</div>
 {/if}
+
+<audio bind:this={audioElement} src={radioStreamUrl} preload="auto"></audio>
 
 <style>
 	:global(body) {

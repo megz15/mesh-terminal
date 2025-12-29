@@ -22,6 +22,9 @@ export let cursorPosition: {value: number} = $state({ value: 0 });
 
 export let toggleKeyboard: {value: boolean} = $state({ value: false });
 
+export let isRadioPlaying: {value: boolean} = $state({ value: false });
+export const radioStreamUrl = "https://stream.radiojar.com/2fa4wbch308uv";
+
 export const virtualFilesystem: VirtualFilesystem = {
     "": {
         "home": {

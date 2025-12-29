@@ -15,10 +15,10 @@ export default function cowsay(args: string[]): string {
     }
 
     return `
-(${cowText})
-   │         ^__^
-   ┕━━━━━━━  (oO)\\_______
-             (__)\\       )\\/\\
-                ||----w |
-   ^^ ^^^  ^^   ||     ||`;
+<span class="text-gray-200">(</span>${cowText}<span class="text-gray-200">)</span>
+   <span class="text-gray-200">|</span>         <span class="text-yellow-400">^__^</span>
+   <span class="text-gray-200">\\_______</span> <span class="text-yellow-400"> (oO)\\_______</span>
+             <span class="text-yellow-400">(__)\\       )<span class="text-yellow-400">\\/\\</span></span>
+             <span class="text-yellow-400">   ||----<span class="text-yellow-400">w</span> |</span>
+   <span class="text-green-400">^^ ^^^  ^^</span>   ||     ||`;
 }
