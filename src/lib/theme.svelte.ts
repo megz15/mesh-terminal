@@ -1,26 +1,4 @@
-export interface Theme {
-    text: {
-        primary: string;
-        secondary: string;
-        username: string;
-        path: string;
-        success: string;
-        error: string;
-        warning: string;
-        info: string;
-    };
-    bg: {
-        primary: string;
-        cursor: string;
-        topBar: string;
-        topBarBorder: string;
-    };
-    components: {
-        topBarText: string;
-        keyboardBorder: string;
-        keyboardBg: string;
-    };
-}
+import type { Theme } from "./types";
 
 export const themes: Record<string, Theme> = {
     default: {

@@ -1,4 +1,4 @@
-import type { VirtualFilesystem } from "./types";
+import type { Track, VirtualFilesystem } from "./types";
 import { currentTheme } from "./theme.svelte";
 
 export function getPromptText(): string {
@@ -24,6 +24,8 @@ export let toggleKeyboard: {value: boolean} = $state({ value: false });
 
 export let isRadioPlaying: {value: boolean} = $state({ value: false });
 export const radioStreamUrl = "https://stream.radiojar.com/2fa4wbch308uv";
+
+export let currentTrack: {value: Track | null} = $state({ value: null });
 
 export const virtualFilesystem: VirtualFilesystem = {
     "": {

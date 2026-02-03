@@ -32,11 +32,11 @@
     ];
 </script>
 
-<div class="z-50 flex flex-col gap-1.5 pt-4 {isProgram ? "fixed overflow-x-auto bottom-4 max-md:w-screen max-md:left-0 max-md:mb-16 md:left-[50%] md:translate-x-[-50%]" : "max-sm:mb-10"}">
+<div class="z-50 flex flex-col gap-1.5 pt-4 -translate-x-4 {isProgram ? "fixed overflow-x-auto bottom-4 max-md:w-screen max-md:left-0 max-md:mb-16 md:left-[50%] md:translate-x-[-50%]" : "max-sm:mb-10"}">
     {#each isShifted ? shiftedKeyRows : keyRows as row}
-        <div class="flex gap-1.5">
+        <div class="flex gap-0.5 sm:gap-1.5">
         {#each row as key}
-            <button disabled={(key == "Ctrl" || key == 'c' || key == "C") ? false : isControlled} class="{(isControlled && !(key == "Ctrl" || key == 'c' || key == "C")) ? "opacity-20 pointer-events-none" : "opacity-100"} px-3 py-2 text-lg {getTheme().components.keyboardBg} border {getTheme().components.keyboardBorder} rounded-lg {getTheme().text.primary} cursor-pointer"
+            <button disabled={(key == "Ctrl" || key == 'c' || key == "C") ? false : isControlled} class="{(isControlled && !(key == "Ctrl" || key == 'c' || key == "C")) ? "opacity-20 pointer-events-none" : "opacity-100"} py-2 px-2.5 sm:px-3 sm:py-2 text-sm sm:text-lg {getTheme().components.keyboardBg} border {getTheme().components.keyboardBorder} rounded-lg {getTheme().text.primary} cursor-pointer"
             on:click={() => {
                 const fullCommand = cmdInputText.value.trim();
                 const cmd = fullCommand.split(" ");

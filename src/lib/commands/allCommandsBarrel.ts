@@ -17,6 +17,7 @@ import nano from "./nano";
 import neofetch from "./neofetch";
 import printenv from "./printenv";
 import pwd from "./pwd";
+import radio from "./radio";
 import rm from "./rm";
 import sudo from "./sudo";
 import test from "./test";
@@ -151,4 +152,8 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         man: "Show the current user",
         cmd: whoami,
     },
+    radio: {
+        man: "Show current track info",
+        cmd: radio,
+    }
 }
