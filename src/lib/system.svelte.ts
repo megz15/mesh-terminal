@@ -10,7 +10,7 @@ export let workingDirectoryPath: {value:string} = $state({ value: `/home/${userN
 
 let promptText = $derived.by(() => {
     const theme = currentTheme.value;
-    return `<span class="text-gray-200">oh no <span class="${theme.text.username} font-semibold">${userName}</span> is in <span class="${theme.text.path} font-semibold">${workingDirectoryPath.value}</span> $</span>`;
+    return `<span class="text-gray-200 text-xs sm:text-base">oh no <span class="${theme.text.username} font-semibold">${userName}</span> is in <span class="${theme.text.path} font-semibold">${workingDirectoryPath.value}</span> $</span>`;
 });
 
 export let commandHistory: {value: string[]} = $state({ value: [] });

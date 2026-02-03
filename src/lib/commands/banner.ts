@@ -3,7 +3,7 @@ import { getTheme } from "$lib/theme.svelte";
 
 export default function banner(): string {
     const theme = getTheme()
-    return `<div class="text-base/3.75 font-black ${theme.text.username}">
+    return `<div class="text-xs/2.5 sm:text-base/3.75 font-black ${theme.text.username}">
     ##::::'##:'########::'######::'##::::::::
     ###::'###: ##.....::'##... ##: ##::::::::
     ####'####: ##::::::: ##:::..:: ##::::::::

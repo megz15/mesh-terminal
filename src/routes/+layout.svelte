@@ -57,8 +57,8 @@
 {/if}
 
 {#if programs.includes(page.url.pathname.split("/")[2])}
-	<div class="fixed bottom-5 right-5 text-yellow-400 text-sm z-10">
-		Press 'Ctrl + C'<br />or Go Back 1 pg<br />to eXit program
+	<div class="fixed bottom-5 right-5 text-yellow-400 text-sm z-10 p-2 bg-neutral-800/90">
+		Press 'Ctrl + C'<br />or Go Up 1 page<br />to eXit program
 	</div>
 {/if}
 

@@ -58,7 +58,7 @@
                     case "Enter":
                         const theme = getTheme();
                         const promptText = getPromptText();
-                        outputHistory.innerHTML += `<pre class="${theme.text.primary} font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
+                        outputHistory.innerHTML += `<pre class="${theme.text.primary} break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">${promptText} ${fullCommand}</pre>`;
 
                         if (fullCommand) {
                             commandHistory.value.push(fullCommand);
@@ -90,7 +90,7 @@
                             output = commands[cmd[0]]["cmd"](cmd.slice(1));
                         } else output = `MESh: command not found: <span class="${theme.text.error} font-semibold">${cmd}</span>`;
                         
-                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${output}</pre>`;
+                        if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base"> &gt&gt ${output}</pre>`; //sm:break-all sm:whitespace-pre-wrap
                         cmdInputText.value = "";
                         cursorPosition.value = 0;
 
@@ -151,12 +151,12 @@
                                     cmdInputText.value = suggestions[0] + " ";
                                     cursorPosition.value = cmdInputText.value.length;
                                 } else if (suggestions.length > 1) {
-                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
+                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">Suggestions: ${suggestions.join(", ")}</pre>`;
                                 } else {
-                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
+                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">No suggestions found for "${fullCommand}"</pre>`;
                                 }
                             } else {
-                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono]">Type 'help' for a list of commands</pre>`;
+                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">Type 'help' for a list of commands</pre>`;
                             }
                         }
                         break;
@@ -183,7 +183,7 @@
                                 break;
                             }
                             else {
-                                outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${commands["exit"]["cmd"]([])}</pre>`;
+                                outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base"> &gt&gt ${commands["exit"]["cmd"]([])}</pre>`; //sm:break-all sm:whitespace-pre-wrap
                                 cmdInputText.value = "";
                                 cursorPosition.value = 0;
                                 isControlled = false;

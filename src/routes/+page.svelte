@@ -34,8 +34,7 @@
         const cmd = fullCommand.split(" ");
 
         if (e.key == "c" && e.ctrlKey) {
-            const theme = getTheme();
-            outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${parseCommand("exit")}</pre>`;
+            outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base"> &gt&gt ${parseCommand("exit")}</pre>`; //sm:break-all sm:whitespace-pre-wrap
             cmdInputText.value = "";
             cursorPosition.value = 0;
             return;
@@ -57,9 +56,8 @@
                 break;
             
             case "Enter":
-                const theme = getTheme();
                 const promptText = getPromptText();
-                outputHistory.innerHTML += `<pre class="text-gray-200 font-[Jetbrains_Mono]">${promptText} ${fullCommand}</pre>`;
+                outputHistory.innerHTML += `<pre class="text-gray-200 break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">${promptText} ${fullCommand}</pre>`;
 
                 if (fullCommand) {
                     commandHistory.value.push(fullCommand);
@@ -71,7 +69,7 @@
                 
                 const output = parseCommand(cmd[0], cmd.slice(1));
                 
-                if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]"> &gt&gt ${output}</pre>`;
+                if (cmd[0] != "clear" && cmd[0] != "" && cmd[0] != "cd") outputHistory.innerHTML += `<pre class="break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base"> &gt&gt ${output}</pre>`; //sm:break-all sm:whitespace-pre-wrap
                 cmdInputText.value = "";
                 cursorPosition.value = 0;
 
@@ -132,12 +130,12 @@
                             cmdInputText.value = suggestions[0] + " ";
                             cursorPosition.value = cmdInputText.value.length;
                         } else if (suggestions.length > 1) {
-                            outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono]">Suggestions: ${suggestions.join(", ")}</pre>`;
+                            outputHistory.innerHTML += `<pre class="${theme.text.secondary} break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">Suggestions: ${suggestions.join(", ")}</pre>`;
                         } else {
-                            outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono]">No suggestions found for "${fullCommand}"</pre>`;
+                            outputHistory.innerHTML += `<pre class="${theme.text.secondary} break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">No suggestions found for "${fullCommand}"</pre>`;
                         }
                     } else {
-                        outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono]">Type 'help' for a list of commands</pre>`;
+                        outputHistory.innerHTML += `<pre class="${theme.text.secondary} break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">Type 'help' for a list of commands</pre>`;
                     }
                 }
                 break;
@@ -193,8 +191,10 @@
 
 <div class="input" bind:this={inputContainer}>
     <div id="outputHistory" bind:this={outputHistory}>
-        <pre class="sm:break-all sm:whitespace-pre-wrap font-[Jetbrains_Mono]">{@html parseCommand("banner")}</pre>
+        <pre class="break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">{@html parseCommand("banner")}</pre>
+        <!-- sm:break-all sm:whitespace-pre-wrap -->
     </div>
     <span id="prompt">{@html getPromptText()}</span>
-    <span class="cmd-input sm:break-all text-gray-200">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
+    <span class="cmd-input break-all text-gray-200 text-xs sm:text-base">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
+    <!-- sm:break-all -->
 </div>
