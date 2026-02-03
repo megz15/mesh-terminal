@@ -29,6 +29,10 @@ export default function cd(args: string[]): string {
             let requiredDirPath = args[0]
             let pathExists = true
 
+            if (workingDirectoryPath.value == "/") {
+                requiredDirPath = `/${requiredDirPath}`
+            }
+
             if (!requiredDirPath.startsWith("/") && workingDirectoryPath.value != "/") {
                 requiredDirPath = `${workingDirectoryPath.value}/${requiredDirPath}`
             }

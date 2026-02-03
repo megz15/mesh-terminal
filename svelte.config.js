@@ -10,6 +10,7 @@ const config = {
       // was only thing that worked, not from gh-pages branch
       pages: 'docs',
       assets: 'docs',
+      fallback: '404.html',
     }),
     paths: {
       base: `/mesh-terminal`,
