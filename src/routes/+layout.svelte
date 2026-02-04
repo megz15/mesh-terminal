@@ -6,8 +6,9 @@
 	import { page } from "$app/state";
 	import { afterNavigate, goto } from "$app/navigation";
 	import { onMount } from "svelte";
-	import { currentTheme } from "$lib/theme.svelte";
+	import { currentTheme, getTheme } from "$lib/theme.svelte";
 
+	const theme = getTheme();
 	let { children } = $props();
 
 	let audioElement: HTMLAudioElement;
@@ -57,7 +58,7 @@
 {/if}
 
 {#if programs.includes(page.url.pathname.split("/")[2])}
-	<div class="fixed bottom-5 right-5 text-yellow-400 text-sm z-10 p-2 bg-neutral-800/90">
+	<div class="fixed bottom-5 right-5 {theme.text.warning} text-sm z-10 p-2 {theme.bg.topBar}/90">
 		Press 'Ctrl + C'<br />or Go Up 1 page<br />to eXit program
 	</div>
 {/if}

@@ -145,18 +145,19 @@
                     
                     case "Tab":
                         if (cmd.length == 1) {
+                            const theme = getTheme();
                             if (fullCommand) {
                                 const suggestions = Object.keys(commands).filter(c => c.startsWith(fullCommand));
                                 if (suggestions.length === 1) {
                                     cmdInputText.value = suggestions[0] + " ";
                                     cursorPosition.value = cmdInputText.value.length;
                                 } else if (suggestions.length > 1) {
-                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">Suggestions: ${suggestions.join(", ")}</pre>`;
+                                    outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">Suggestions: ${suggestions.join(", ")}</pre>`;
                                 } else {
-                                    outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">No suggestions found for "${fullCommand}"</pre>`;
+                                    outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">No suggestions found for "${fullCommand}"</pre>`;
                                 }
                             } else {
-                                outputHistory.innerHTML += `<pre class="text-gray-400 font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">Type 'help' for a list of commands</pre>`;
+                                outputHistory.innerHTML += `<pre class="${theme.text.secondary} font-[Jetbrains_Mono] text-xs sm:text-base break-all whitespace-pre-wrap">Type 'help' for a list of commands</pre>`;
                             }
                         }
                         break;

@@ -7,7 +7,7 @@ export default function theme(args: string[]): string {
 
     if (args.length === 0) {
         const available = getAvailableThemes().join(", ")
-        return `Current theme: <span class="${theme.text.info}">${getTheme() === getTheme() ? "default" : "unknown"}</span>\n\nAvailable themes: ${available}\n\nUsage: theme <name>`
+        return `Current theme: <span class="${theme.text.info}">${getTheme().name}</span>\n\nAvailable themes: ${available}\n\nUsage: theme <name>`
     }
 
     const themeName = args[0].toLowerCase()

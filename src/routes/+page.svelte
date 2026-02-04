@@ -12,6 +12,8 @@
     let outputHistory: HTMLDivElement;
     let inputContainer: HTMLDivElement;
 
+    const theme = $derived(getTheme());
+
     onMount(() => {
         const savedHistory = localStorage.getItem("MESh_commandHistory");
         if (savedHistory) {
@@ -57,7 +59,7 @@
             
             case "Enter":
                 const promptText = getPromptText();
-                outputHistory.innerHTML += `<pre class="text-gray-200 break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">${promptText} ${fullCommand}</pre>`;
+                outputHistory.innerHTML += `<pre class="${theme.text.secondary} break-all whitespace-pre-wrap font-[Jetbrains_Mono] text-xs sm:text-base">${promptText} ${fullCommand}</pre>`;
 
                 if (fullCommand) {
                     commandHistory.value.push(fullCommand);
@@ -123,7 +125,6 @@
             
             case "Tab":
                 if (cmd.length == 1) {
-                    const theme = getTheme();
                     if (fullCommand) {
                         const suggestions = Object.keys(commands).filter(c => c.startsWith(fullCommand));
                         if (suggestions.length == 1) {
@@ -156,7 +157,6 @@
     }
 
     function parseCommand(cmd: string, args: string[] = []): string {
-        const theme = getTheme();
         if (cmd.startsWith("./")) {
             if (programs.includes(cmd.slice(2))) {
                 window.removeEventListener("keydown", keyInterceptListener);
@@ -174,7 +174,6 @@
     }
 
     function highlightCursor(cmdInputText: string, cursorPosition: number) {
-        const theme = getTheme();
         const cursorBound = Math.max(0, Math.min(cursorPosition, cmdInputText.length));
 
         if (cursorPosition == cmdInputText.length) {
@@ -195,6 +194,6 @@
         <!-- sm:break-all sm:whitespace-pre-wrap -->
     </div>
     <span id="prompt">{@html getPromptText()}</span>
-    <span class="cmd-input break-all text-gray-200 text-xs sm:text-base">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
+    <span class="cmd-input break-all {theme.text.secondary} text-xs sm:text-base">{@html highlightCursor(cmdInputText.value, cursorPosition.value)}</span>
     <!-- sm:break-all -->
 </div>

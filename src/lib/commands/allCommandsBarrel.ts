@@ -27,8 +27,9 @@ import whoami from "./whoami";
 import resume from "./resume";
 
 import { HISTSIZE } from "$lib/system.svelte";
-import { currentTheme } from "$lib/theme.svelte";
+import { getTheme } from "$lib/theme.svelte";
 
+const currentTheme = getTheme();
 type Command = (args: string[]) => string;
 
 export const commands: Record<string, {man: string, cmd: Command}> = {
@@ -49,7 +50,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: clear,
     },
     clshist: {
-        man: `Clear session command history <span class="${currentTheme.value.text.error}">(HISTSIZE = ${HISTSIZE})</span>`,
+        man: `Clear session command history <span class="${currentTheme.text.error}">(HISTSIZE = ${HISTSIZE})</span>`,
         cmd: clshist,
     },
     cowsay: {
@@ -85,7 +86,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: help,
     },
     hist: {
-        man: `Show command history <span class="${currentTheme.value.text.error}">(HISTSIZE = ${HISTSIZE})</span>`,
+        man: `Show command history <span class="${currentTheme.text.error}">(HISTSIZE = ${HISTSIZE})</span>`,
         cmd: hist,
     },
     ls: {
@@ -125,7 +126,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: resume,
     },
     cv: {
-        man: `alias for <span class="${currentTheme.value.text.info}">resume</span>`,
+        man: `alias for <span class="${currentTheme.text.info}">resume</span>`,
         cmd: resume,
     },
     rm: {

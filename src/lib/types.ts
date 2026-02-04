@@ -8,6 +8,7 @@ export type VirtualFilesystem = {
 };
 
 export type Theme = {
+    name: string;
     text: {
         primary: string;
         secondary: string;

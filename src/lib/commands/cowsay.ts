@@ -1,7 +1,9 @@
 import { envVars } from "$lib/system.svelte";
+import { getTheme } from "$lib/theme.svelte";
 
 export default function cowsay(args: string[]): string {
     let cowText: string = "moooOoooOo";
+    const theme = getTheme();
     
     if (args.length > 0) {
         cowText = args.join(" ");
@@ -15,10 +17,10 @@ export default function cowsay(args: string[]): string {
     }
 
     return `
-<span class="text-gray-200">(</span>${cowText}<span class="text-gray-200">)</span>
-   <span class="text-gray-200">|</span>         <span class="text-yellow-400">^__^</span>
-   <span class="text-gray-200">\\_______</span> <span class="text-yellow-400"> (oO)\\_______</span>
-             <span class="text-yellow-400">(__)\\       )<span class="text-yellow-400">\\/\\</span></span>
-             <span class="text-yellow-400">   ||----<span class="text-yellow-400">w</span> |</span>
-   <span class="text-green-400">^^ ^^^  ^^</span>   ||     ||`;
+<span class="${theme.text.secondary}">(</span>${cowText}<span class="${theme.text.secondary}">)</span>
+   <span class="${theme.text.secondary}">|</span>         <span class="${theme.text.warning}">^__^</span>
+   <span class="${theme.text.secondary}">\\_______</span> <span class="${theme.text.warning}"> (oO)\\_______</span>
+             <span class="${theme.text.warning}">(__)\\       )<span class="${theme.text.warning}">\\/\\</span></span>
+             <span class="${theme.text.warning}">   ||----<span class="${theme.text.warning}">w</span> |</span>
+   <span class="${theme.text.success}">^^ ^^^  ^^</span>   ||     ||`;
 }
