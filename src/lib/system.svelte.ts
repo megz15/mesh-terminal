@@ -10,7 +10,8 @@ export let workingDirectoryPath: {value:string} = $state({ value: `/home/${userN
 
 let promptText = $derived.by(() => {
     const theme = getTheme();
-    return `<span class="${theme.text.secondary} text-xs sm:text-base">oh no <span class="${theme.text.username} font-semibold">${userName}</span> is in <span class="${theme.text.path} font-semibold">${workingDirectoryPath.value}</span> $</span>`;
+    return `<span class="${theme.text.secondary} text-xs sm:text-base"><span class="${theme.text.username} font-semibold">${userName}</span> @ <span class="${theme.text.username} font-semibold">MESh</span> : <span class="${theme.text.path} font-semibold">${workingDirectoryPath.value}</span> $</span>`;
+    // `<span class="${theme.text.secondary} text-xs sm:text-base">oh no <span class="${theme.text.username} font-semibold">${userName}</span> is in <span class="${theme.text.path} font-semibold">${workingDirectoryPath.value}</span> $</span>`
 });
 
 export let commandHistory: {value: string[]} = $state({ value: [] });
@@ -45,7 +46,7 @@ export const virtualFilesystem: VirtualFilesystem = {
                     files: ["sarod.mp4"]
                 },
                 "Downloads": {
-                    files: ["magisk.img", "bitcoin.exe"]
+                    files: ["magisk.img", "_bitcoin_wallet_2013.exe"]
                 },
                 files: ["cat.txt"]
             }

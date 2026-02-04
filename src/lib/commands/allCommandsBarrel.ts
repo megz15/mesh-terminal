@@ -28,6 +28,7 @@ import resume from "./resume";
 
 import { HISTSIZE } from "$lib/system.svelte";
 import { getTheme } from "$lib/theme.svelte";
+import cal from "./cal";
 
 const currentTheme = getTheme();
 type Command = (args: string[]) => string;
@@ -40,6 +41,10 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
     cat: {
         man: "[ WIP ] View file contents (partially implemented)",
         cmd: cat,
+    },
+    cal: {
+        man: "Display calendar for specified month",
+        cmd: cal,
     },
     cd: {
         man: "Change the current working directory",
@@ -54,7 +59,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: clshist,
     },
     cowsay: {
-        man: "cow ASCII! 🐮",
+        man: "cow ASCII!",
         cmd: cowsay,
     },
     date: {
@@ -70,7 +75,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: echo,
     },
     emacs: {
-        man: "Editing MACroS, the extensible, customizable, self-documenting real-time display editor",
+        man: "Editing MACroS, extensible real-time editor",
         cmd: emacs,
     },
     exit: {
@@ -90,7 +95,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: hist,
     },
     ls: {
-        man: "List files in the specified directory (or current directory if none specified)",
+        man: "List files in the specified directory",
         cmd: ls,
     },
     man: {
@@ -102,7 +107,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: () => "[ WIP ] 🚫🥄 (not implemented yet)",
     },
     nano: {
-        man: "Nano, the Pico editor clone with enhancements",
+        man: "Pico editor clone with enhancements",
         cmd: nano,
     },
     neofetch: {
@@ -146,7 +151,7 @@ export const commands: Record<string, {man: string, cmd: Command}> = {
         cmd: theme,
     },
     vim: {
-        man: "Vi Improved, a highly configurable, improved version of the vi text editor",
+        man: "Improved version of the vi text editor",
         cmd: vim,
     },
     whoami: {
